@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useEditorState } from '../composables/useEditorState';
+const editorContainer = ref<HTMLDivElement | null>(null);
+const { content, initEditor} = useEditorState({
+    defaultContent: 'Hello, this is a simple editor!',
+    onContentChange(content) {
+        console.log('Content changed:', content);
+    },
+});
+
+onMounted(() => {
+    if (editorContainer.value) {
+        initEditor(editorContainer.value);
+    }
+});
 </script>
 
 <template>
-  <div class="editor-container">
-    <textarea class="editor-textarea" />
-  </div>
+   <div ref="editorContainer" class="editor-container"></div>
 </template>
 
 <style scoped>
@@ -15,12 +27,5 @@ import { ref } from 'vue';
   overflow-y: auto;
   height: 100%;
   box-sizing: border-box;
-}
-.editor-textarea {
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  resize: none;
 }
 </style>
