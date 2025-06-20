@@ -1,9 +1,10 @@
 import { EditorState, type Extension,} from "@codemirror/state";
-import { EditorView, ViewUpdate } from "@codemirror/view"
+import { EditorView, keymap, lineNumbers, ViewUpdate } from "@codemirror/view"
 import { ref, shallowRef, watch } from "vue";
 import { useEditorContent } from "./useEditorContent";
-import { markdown } from "@codemirror/lang-markdown";
+import { markdown, markdownKeymap } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
+import { defaultKeymap } from "@codemirror/commands";
 
 
 interface EditorStateOptions {
@@ -53,6 +54,11 @@ export function useEditorState(options: EditorStateOptions = {}) {
 
    */
   const previewElement = shallowRef<HTMLElement | null>(null);
+  const baseExtensions = [
+    lineNumbers(),
+    keymap.of(markdownKeymap),
+    keymap.of(defaultKeymap)
+  ];
 
   const initEditor = (el: HTMLElement) => {
     if (!el) {
@@ -66,6 +72,7 @@ export function useEditorState(options: EditorStateOptions = {}) {
       doc: content.value,
       extensions: [
         markdown({ codeLanguages: languages}),
+        // ...baseExtensions,
         EditorView.updateListener.of((update: ViewUpdate) => {
           if (update.docChanged) {
             const newContent = update.state.doc.toString();
