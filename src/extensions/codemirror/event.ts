@@ -10,7 +10,7 @@ export type UploadCallback = (param: { url: string, alt?: string }) => void;
 
 
 export type EventExtensionOptions = {
-    scrollWrapper: string;
+    scrollWrapper?: string;
     // 拖拽上传处理函数
   // 它接收文件和成功回调，由调用者实现具体的上传逻辑
   onDragUpload?: (file: File, callback: UploadCallback) => void;

@@ -1,4 +1,4 @@
-import type { VueElement } from "vue";
+import type { Component } from "vue";
 
 export enum BaseToolbarType {
     HEADING = "heading", //标题
@@ -17,7 +17,7 @@ export enum BaseToolbarType {
     UL = "ul", //无序列表
     OL = "ol", //有序列表
     CODE = "code", //代码块
-    LINECODE = "line-code", //行内代码
+    INLINE_CODE = "inline-code", //行内代码
     LINK = "link", //链接
     IMAGE = "image", //图片
     IMAGE_LINK = "image-link", //图片链接
@@ -49,7 +49,7 @@ export type BaseToolbarItem = {
     disabled?: boolean; // 是否禁用
     visible?: boolean; // 是否可见
     onClick?: () => void; // 点击事件处理函数
-    component?: VueElement; // Vue 组件
+    component?: Component; // Vue 组件
 }
 
 export type ListToolbarItem  = {
@@ -58,7 +58,7 @@ export type ListToolbarItem  = {
     hotkey?: {
         command: string; // 快捷键命令
         description: string; // 快捷键描述
-        handler: () => void; // 快捷键处理函数
+        handler?: () => void; // 快捷键处理函数
     };
     onClick?: () => void; // 点击事件处理函数
 }
@@ -68,7 +68,7 @@ export type ToolbarItem = BaseToolbarItem & {
     hotkey?: {
         command: string; // 快捷键命令
         description: string; // 快捷键描述
-        handler: () => void; // 快捷键处理函数
+        handler?: () => void; // 快捷键处理函数
     }
     
 }

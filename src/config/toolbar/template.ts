@@ -102,7 +102,7 @@ export const toolbarTemplate: ToolbarTemplateType = {
       end: 3,
     },
   },
-  inlinecode: {
+  "inline-code": {
     content: "``",
     selection: {
       start: 1,

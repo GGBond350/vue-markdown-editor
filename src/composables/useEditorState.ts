@@ -1,26 +1,31 @@
 import { EditorState, type Extension,} from "@codemirror/state";
 import { EditorView, keymap, lineNumbers, ViewUpdate } from "@codemirror/view"
-import { ref, shallowRef, watch } from "vue";
+import { onUnmounted, ref, shallowRef, watch } from "vue";
 import { useEditorContent } from "./useEditorContent";
 import { markdown, markdownKeymap } from "@codemirror/lang-markdown";
 import { languages } from "@codemirror/language-data";
 import { defaultKeymap } from "@codemirror/commands";
+import { createExtensions, type ExtensionsOptions } from "@/extensions/codemirror";
+import { defaultToolbarsConfig } from "@/config/toolbar";
+import contentInsert from "@/utils/contentInsert";
 
 
-interface EditorStateOptions {
-  extensions?: Extension[]; // CodeMirror 扩展
+export interface EditorStateOptions extends ExtensionsOptions { 
+
   defaultContent?: string; // 默认内容
   isPersistent?: boolean; // 是否持久化
   onContentChange?: (content: string, viewUpdate: ViewUpdate) => void; // 内容变化回调
 }
 
 export function useEditorState(options: EditorStateOptions = {}) {
-  const {
-    extensions = [],
+   const {
     defaultContent = "",
     isPersistent = true,
     onContentChange = () => {},
+    toolbars = defaultToolbarsConfig, // 使用我们刚创建的默认配置
+    ...restOptions // 其他如 onDragUpload 等将直接传递给扩展
   } = options;
+
 
   const { content, setStoredContent } = useEditorContent({ defaultContent, isPersistent });
 
@@ -59,7 +64,7 @@ export function useEditorState(options: EditorStateOptions = {}) {
     keymap.of(markdownKeymap),
     keymap.of(defaultKeymap)
   ];
-
+  
   const initEditor = (el: HTMLElement) => {
     if (!el) {
       console.error("Editor container element is not provided.");
@@ -67,27 +72,36 @@ export function useEditorState(options: EditorStateOptions = {}) {
     }
     editorContainer.value = el;
 
+    const allExtensions: Extension[] = createExtensions({
+      ...restOptions,
+      toolbars
+    });
     // 编辑器状态
     const state = EditorState.create({
       doc: content.value,
       extensions: [
-        markdown({ codeLanguages: languages}),
-        // ...baseExtensions,
+        ...baseExtensions,
+       ...allExtensions,
         EditorView.updateListener.of((update: ViewUpdate) => {
           if (update.docChanged) {
             const newContent = update.state.doc.toString();
             content.value = newContent; // 更新响应式内容
-            setStoredContent(newContent); // 持久化存储
+            if (isPersistent) {
+              // 如果需要持久化存储
+              setStoredContent(newContent);
+            }
+             onContentChange(newContent, update);
           }
         }),
-        ...extensions
       ]
     });
     // 编辑器视图
-    editorView.value = new EditorView({
+   const view = new EditorView({
       state,
       parent: el
     });
+    editorView.value = view;
+    contentInsert.setEditorView(view);
   }
     // 更新编辑器内容
   const updateContent = (newContent: string) => {
@@ -112,11 +126,17 @@ export function useEditorState(options: EditorStateOptions = {}) {
     currentScrollContainer.value = container;
   }
 
-  watch(content, (newContent) => {
-    if (editorView.value && editorView.value.state.doc.toString() !== newContent) {
+  watch(()=> options.defaultContent, (newContent) => {
+    if (newContent !== undefined && editorView.value && editorView.value.state.doc.toString() !== newContent) {
       updateContent(newContent);
     }
   });
+  onUnmounted(() => {
+    if (editorView.value) {
+      editorView.value.destroy(); // 销毁编辑器视图
+      editorView.value = null; // 清除引用
+    }
+  })
   return {
     editorView,
     editorContainer,

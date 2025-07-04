@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useEditorState } from '../composables/useEditorState';
+import { useEditorState } from '../../composables/useEditorState';
 const editorContainer = ref<HTMLDivElement | null>(null);
 const { content, initEditor} = useEditorState({
     defaultContent: 'Hello, this is a simple editor!',
     onContentChange(content) {
-        console.log('Content changed:', content);
     },
 });
 
@@ -17,15 +16,13 @@ onMounted(() => {
 </script>
 
 <template>
-   <div ref="editorContainer" class="editor-container"></div>
+  <div ref="editorContainer" class="editor-instance-container"></div>
 </template>
 
 <style scoped>
-.editor-container {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  height: 100%;
-  box-sizing: border-box;
+.editor-instance-container {
+  width: 100%;
+  height: 100%; /* 继承来自Grid单元格的高度 */
+  overflow-y: auto; /* 关键：在这里实现滚动！*/
 }
 </style>

@@ -6,7 +6,7 @@ import { history } from "@codemirror/commands";
 import { EditorView } from "codemirror";
 import { createHotkeysExtension } from "./hotkey";
 
-type ExtensionsOptions = EventExtensionOptions & {
+export type ExtensionsOptions = EventExtensionOptions & {
     enableShotcut?: boolean;
     toolbars?: ToolbarItem[]; 
 }
