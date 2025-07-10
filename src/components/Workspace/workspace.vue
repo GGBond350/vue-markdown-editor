@@ -1,11 +1,25 @@
 <script setup lang="ts">
-import Directory from '../Directory/directory.vue';
-import Help from '../Help/help.vue';
+import Directory from '../Sidebar/directory.vue';
+import Help from '../Sidebar/help.vue';
 import StatusBar from '../StatusBar/statusBar.vue';
-import Editor from '../Editor/Editor.vue';
+import Editor from '../Sidebar/Editor.vue';
 import Preview from '../Preview/Preview.vue';
 import Toolbar from '../Toolbar/Toolbar.vue';
 import { defaultToolbarsConfig } from '@/config/toolbar';
+import { useToolbarStore } from '@/store/toolbar';
+import { storeToRefs } from 'pinia';
+
+const toolbarStore = useToolbarStore();
+const {
+    isLeftSidebarVisible,
+    leftSidebarComponent,
+    isRightSidebarVisible,
+    rightSidebarComponent,
+    isOnlyPreview,
+    isOnlyWrite
+} = storeToRefs(toolbarStore);
+
+
 
 </script>
 
@@ -15,17 +29,17 @@ import { defaultToolbarsConfig } from '@/config/toolbar';
         <div class="workspace-item toolbar-container">
             <Toolbar :toolbar-items="defaultToolbarsConfig"></Toolbar>
         </div>
-        <div class="workspace-item left-container">
-           <Directory />
+        <div  v-show="isLeftSidebarVisible" class="workspace-item left-container">
+           <component :is="leftSidebarComponent" />
         </div>
-        <div class="workspace-item editor-container">
+        <div v-show="!isOnlyPreview" class="workspace-item editor-container">
             <Editor />
         </div>
-        <div class="workspace-item preview-container">
+        <div v-show="!isOnlyWrite" class="workspace-item preview-container">
             <Preview />
         </div>
-        <div class="workspace-item right-container">
-            <Help />
+        <div v-show="isRightSidebarVisible" class="workspace-item right-container">
+            <component :is="rightSidebarComponent" />
         </div>
         <div class="workspace-item statusbar-container">
             <StatusBar />
@@ -56,10 +70,7 @@ import { defaultToolbarsConfig } from '@/config/toolbar';
     display: flex; /* 让子组件能撑满 */
     flex-direction: column;
 }
-/* :deep(*) {
-    width: 100%;
-    height: 100%;
-} */
+
 
 .toolbar-container {
     grid-area: toolbar;

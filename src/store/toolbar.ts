@@ -24,21 +24,32 @@ export const useToolbarStore = defineStore("toolbar", () => {
         }
     }
     // 侧边栏相关状态
-    const isSideBySide = ref(false);
-    // 侧边栏组件
-    // 使用shallowRef避免深层响应式，提高性能
-    const sidebarComponent = shallowRef<Component | null>(null);
-    // 组件标识符，用于动态加载组件
-    const componentMark = ref<string | null>(null);
+    const isLeftSidebarVisible = ref(false);
+    const leftSidebarComponent = shallowRef<Component | null>(null);
+    const leftSidebarMark = ref<string | null>(null);
 
-    function setSidebarComponent(component: Component | null, mark: string | null) {
-        if (mark === componentMark.value) {
-            // 如果组件标识符相同，则不更新
-            isSideBySide.value = !isSideBySide.value; // 切换侧边栏显示状态
+
+    const isRightSidebarVisible = ref(false);
+    const rightSidebarComponent = shallowRef<Component | null>(null);
+    const rightSidebarMark = ref<string | null>(null);
+
+    function setLeftSidebar(component: Component | null, mark: string | null) {
+        if (leftSidebarMark.value !== mark) {
+            leftSidebarComponent.value = component;
+            leftSidebarMark.value = mark;
+            isLeftSidebarVisible.value = true; // 显示左侧边栏
         } else {
-            isSideBySide.value = true; // 显示侧边栏
-            sidebarComponent.value = component; // 设置新的组件
-            componentMark.value = mark; // 更新组件标识符
+            isLeftSidebarVisible.value = false; // 隐藏左侧边栏
+        }
+    }
+
+    function setRightSidebar(component: Component | null, mark: string | null) {
+        if (rightSidebarMark.value !== mark) {
+            rightSidebarComponent.value = component;
+            rightSidebarMark.value = mark;
+            isRightSidebarVisible.value = true; // 显示右侧边栏
+        } else {
+            isRightSidebarVisible.value = false; // 隐藏右侧边栏
         }
     }
 
@@ -47,17 +58,22 @@ export const useToolbarStore = defineStore("toolbar", () => {
     return {
         // 状态
 
-        isSideBySide,
+        isLeftSidebarVisible,
+        isRightSidebarVisible,
         isFullscreen,
         isOnlyPreview,
         isOnlyWrite,
-        sidebarComponent,
-        componentMark,
+        leftSidebarComponent,
+        leftSidebarMark,
+        rightSidebarComponent,
+        rightSidebarMark,
 
 
         toggleOnlyWrite,
         toggleOnlyPreview,
         toggleFullscreen,
-        setSidebarComponent
+        setLeftSidebar,
+        setRightSidebar,
+        
     };
 });

@@ -16,6 +16,10 @@ import UndoIcon from "@/assets/images/undo.svg"
 import RedoIcon from "@/assets/images/redo.svg"
 import FullScreenIcon from "@/assets/images/fullscreen.svg"
 import SaveIcon from "@/assets/images/save.svg"
+import WriteIcon from "@/assets/images/write.svg"
+import PreviewIcon from "@/assets/images/preview.svg"
+import ContentsIcon from "@/assets/images/contents.svg"
+import HelpIcon from "@/assets/images/help.svg"
 import { Hotkey } from "../hotkeys";
 import contentInsert from "@/utils/contentInsert";
 import { insertContentEvent, redoEvent, undoEvent } from "./event";
@@ -198,5 +202,29 @@ export const defaultToolbarsConfig: ToolbarItem[] = [
       title : "保存",
       icon : SaveIcon,
       hotkey : Hotkey.SAVE
-    }
+    },
+    {
+        type: BaseToolbarType.WRITE,
+        title: '只写',
+        icon: WriteIcon,
+        component: () => import('@/components/Sidebar/Editor.vue')
+    },
+    {
+        type: BaseToolbarType.PREVIEW,
+        title: "只读",
+        icon: PreviewIcon,
+        component: () => import('@/components/Preview/Preview.vue'),
+    },
+    {
+        type: BaseToolbarType.CONTENTS,
+        title: "目录",
+        icon: ContentsIcon,
+        component: () => import('@/components/Sidebar/directory.vue'),
+    },
+    {
+        type: BaseToolbarType.HELP,
+        title: "帮助",
+        icon: HelpIcon,
+        component: () => import('@/components/Sidebar/help.vue'),
+    },
 ]
