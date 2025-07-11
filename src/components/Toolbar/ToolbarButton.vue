@@ -9,7 +9,7 @@
             </div>
         </template>
         <span @click="handleClick" class="toolbar-item">
-          <img :src="icon" class="toolbar-icon" />
+          <component :is="icon" class="toolbar-icon" />
         </span>
     </a-tooltip>
 
@@ -39,8 +39,8 @@ const handleClick = () => {
 </script>
 <style scoped>
 .toolbar-item {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,6 +1,7 @@
 <template>
     <a-dropdown  placement="bottom">
-        <span class="toolbar-item"><img :src="item.icon" class="toolbar-icon" /></span>
+        <span class="toolbar-item">
+            <component :is="item.icon" class="toolbar-icon" /></span>
         <template #overlay>
             <a-menu :items="menuItems" @click="handleMenuClick"/>
         </template>
@@ -40,8 +41,8 @@ const handleMenuClick = (info: MenuInfo) => {
 
 <style scoped>  
 .toolbar-item {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     display: flex;
     justify-content: center;
     align-items: center;

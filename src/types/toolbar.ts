@@ -43,7 +43,7 @@ export type ToolbarType = BaseToolbarType | ExtendedToolbarType;
 // BaseToolbarItem 定义了编辑器工具栏的基本项
 export type BaseToolbarItem = {
     type: ToolbarType; // 工具类型
-    icon?: string; // 工具图标
+    icon?: string | Component; // 工具图标
     title?: string; // 鼠标悬浮提示
     description?: string; // 工具描述
     disabled?: boolean; // 是否禁用

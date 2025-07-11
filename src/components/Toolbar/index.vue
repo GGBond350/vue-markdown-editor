@@ -9,8 +9,8 @@
             <ToolbarDropdown class="toolbar-item" v-else-if="item.listToolbar && item.listToolbar.length > 0" :item="item" />
 
             <!-- 否则，渲染普通按钮组件 -->
-            <ToolbarButton class="toolbar-item" v-else :item="item" />
-
+            <ToolbarButton class="toolbar-item" v-else-if="!item.component" :item="item" />
+            <component :is="item.component" class="toolbar-item"/>
         </template>
     </div>
        
@@ -35,6 +35,7 @@ defineProps({
 
 <style scoped>  
 .toolbar-divider {
+    background-color: #e6e6e6;
     display: inline-block;
     height: 16px;
     margin: 0 8px;

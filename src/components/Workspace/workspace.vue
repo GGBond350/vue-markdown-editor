@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import Directory from '../Sidebar/directory.vue';
-import Help from '../Sidebar/help.vue';
 import StatusBar from '../StatusBar/statusBar.vue';
-import Editor from '../Sidebar/Editor.vue';
+import Editor from '../Editor/Editor.vue';
 import Preview from '../Preview/Preview.vue';
-import Toolbar from '../Toolbar/Toolbar.vue';
+import Toolbar from '../Toolbar/index.vue';
 import { defaultToolbarsConfig } from '@/config/toolbar';
 import { useToolbarStore } from '@/store/toolbar';
 import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 
 const toolbarStore = useToolbarStore();
 const {
@@ -19,13 +18,28 @@ const {
     isOnlyWrite
 } = storeToRefs(toolbarStore);
 
+const gridColumnsStyle = computed(() => {
+    const leftWidth = isLeftSidebarVisible.value ? '240px' : '0';
+    const rightWidth = isRightSidebarVisible.value ? '240px' : '0';
+    let editorWidth = '1fr';
+    let previewWidth = '1fr';
+    if (isOnlyPreview.value) {
+        editorWidth = '0';
+    } else if (isOnlyWrite.value) {
+        previewWidth = '0';
+    }
+    return {
+        "gridTemplateColumns": `${leftWidth} ${editorWidth} ${previewWidth} ${rightWidth}`
+    };
+})
+
 
 
 </script>
 
 <template>
 
-    <div class="workspace">
+    <div class="workspace" :style="gridColumnsStyle">
         <div class="workspace-item toolbar-container">
             <Toolbar :toolbar-items="defaultToolbarsConfig"></Toolbar>
         </div>
@@ -54,13 +68,13 @@ const {
     width: 100%;
     height: 100%;
     grid-template-rows: auto 1fr auto;
-    grid-template-columns: 240px 1fr 1fr 240px;
     grid-template-areas: 
         "toolbar toolbar toolbar toolbar"
         "left editor preview right"
         "statusbar statusbar statusbar statusbar";
     gap: 10px;
-    padding: 10px;    
+    padding: 10px;
+    transition: grid-template-columns 0.3s ease-in-out;
 }
 .workspace-item {
     background-color: #fff;

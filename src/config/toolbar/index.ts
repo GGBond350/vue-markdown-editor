@@ -1,28 +1,30 @@
 import { BaseToolbarType, type ToolbarItem } from "@/types/toolbar";
-import HeadingIcon from "@/assets/images/heading.svg"
-import BoldIcon from "@/assets/images/bold.svg"
-import ItalicIcon from "@/assets/images/italic.svg"
-import UnderLineIcon from "@/assets/images/underline.svg"
-import DeleteIcon from "@/assets/images/delete.svg"
-import BlockQuoteIcon from "@/assets/images/blockquote.svg"
-import UnorderedListIcon from "@/assets/images/ul.svg"
-import OrderedListIcon from "@/assets/images/ol.svg"
-import CodeBlockIcon from "@/assets/images/code.svg"
-import InlineCodeIcon from "@/assets/images/inlinecode.svg"
-import LinkIcon from "@/assets/images/link.svg"
-import ImageIcon from "@/assets/images/image.svg"
-import TableIcon from "@/assets/images/table.svg"
-import UndoIcon from "@/assets/images/undo.svg"
-import RedoIcon from "@/assets/images/redo.svg"
-import FullScreenIcon from "@/assets/images/fullscreen.svg"
-import SaveIcon from "@/assets/images/save.svg"
-import WriteIcon from "@/assets/images/write.svg"
-import PreviewIcon from "@/assets/images/preview.svg"
-import ContentsIcon from "@/assets/images/contents.svg"
-import HelpIcon from "@/assets/images/help.svg"
+import HeadingIcon from "@/assets/images/heading.svg?component"
+import BoldIcon from "@/assets/images/bold.svg?component"
+import ItalicIcon from "@/assets/images/italic.svg?component"
+import UnderLineIcon from "@/assets/images/underline.svg?component"
+import DeleteIcon from "@/assets/images/delete.svg?component"
+import BlockQuoteIcon from "@/assets/images/blockquote.svg?component"
+import UnorderedListIcon from "@/assets/images/ul.svg?component"
+import OrderedListIcon from "@/assets/images/ol.svg?component"
+import CodeBlockIcon from "@/assets/images/code.svg?component"
+import InlineCodeIcon from "@/assets/images/inlinecode.svg?component"
+import LinkIcon from "@/assets/images/link.svg?component"
+import ImageIcon from "@/assets/images/image.svg?component"
+import TableIcon from "@/assets/images/table.svg?component"
+import UndoIcon from "@/assets/images/undo.svg?component"
+import RedoIcon from "@/assets/images/redo.svg?component"
+import FullScreenIcon from "@/assets/images/fullscreen.svg?component"
+import SaveIcon from "@/assets/images/save.svg?component"
 import { Hotkey } from "../hotkeys";
-import contentInsert from "@/utils/contentInsert";
 import { insertContentEvent, redoEvent, undoEvent } from "./event";
+
+import HelpButton from "@/components/Toolbar/HelpButton.vue";
+import ContentsButton from "@/components/Toolbar/ContentsButton.vue";
+import PreviewButton from "@/components/Toolbar/PreviewButton.vue";
+import WriteButton from "@/components/Toolbar/WriteButton.vue";
+import Emoji from "@/components/Toolbar/Emoji.vue";
+import { markRaw } from "vue";
 
 export const defaultToolbarsConfig: ToolbarItem[] = [
 
@@ -175,6 +177,10 @@ export const defaultToolbarsConfig: ToolbarItem[] = [
         hotkey: Hotkey.TABLE.toConfig(),
         onClick: () => insertContentEvent(BaseToolbarType.TABLE),
     },
+    {
+        type: BaseToolbarType.EMOJI,
+        component: markRaw(Emoji),
+    },
     { type: 'separator' },
     {
         type: BaseToolbarType.UNDO,
@@ -205,26 +211,18 @@ export const defaultToolbarsConfig: ToolbarItem[] = [
     },
     {
         type: BaseToolbarType.WRITE,
-        title: '只写',
-        icon: WriteIcon,
-        component: () => import('@/components/Sidebar/Editor.vue')
+        component: markRaw(WriteButton),
     },
     {
         type: BaseToolbarType.PREVIEW,
-        title: "只读",
-        icon: PreviewIcon,
-        component: () => import('@/components/Preview/Preview.vue'),
+        component: markRaw(PreviewButton),
     },
     {
         type: BaseToolbarType.CONTENTS,
-        title: "目录",
-        icon: ContentsIcon,
-        component: () => import('@/components/Sidebar/directory.vue'),
+        component: markRaw(ContentsButton),
     },
     {
         type: BaseToolbarType.HELP,
-        title: "帮助",
-        icon: HelpIcon,
-        component: () => import('@/components/Sidebar/help.vue'),
+        component: markRaw(HelpButton),
     },
 ]
