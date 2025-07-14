@@ -5,23 +5,26 @@
             <span class="header-title">Vue Markdown Editor</span>
         </div>
         <div class="header-right">
-            <LightIcon class="iconStyle themeIcon" @click="toggleTheme('light')"></LightIcon>
-            <DarkIcon class="iconStyle themeIcon" @click="toggleTheme('dark')"></DarkIcon>
+            <LightIcon class="iconStyle themeIcon" @click="toggleTheme" v-if="isLightMode"/>
+            <DarkIcon class="iconStyle themeIcon" @click="toggleTheme" v-else/>
             <component v-for="item in defaultSiteConfig" :is="item.component" class="iconStyle" @click="() => openLink(item.url)" />
         </div>
     </div>
 </template>
 <script setup lang="ts">
 import Logo from '@/assets/images/snake.svg?component';
-import GiteeIcon from '@/assets/images/gitee.svg?component';
-import GithubIcon from '@/assets/images/github-fill.svg?component';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
 import LightIcon from '@/assets/images/light_mode.svg?component';
 import DarkIcon from '@/assets/images/dark_mode.svg?component';
 import { defaultSiteConfig } from '@/config/site';
+import { useThemeStore } from '@/store/useThemeStore';
+const themeStore = useThemeStore();
+const { toggleTheme } = themeStore;
+const { currentTheme } = storeToRefs(themeStore);
 
-const toggleTheme = (theme: 'light' | 'dark') => {
-   
-};
+
+const isLightMode = computed(() => currentTheme.value === 'light');
 const openLink = (url: string) => {
     window.open(url, '_blank');
 };
@@ -37,8 +40,7 @@ const openLink = (url: string) => {
   align-items: center; /* 垂直居中 */
   padding: 0 20px; /* 左右留出边距 */
   height: 50px; /* 定义一个合适的高度 */
-  border-bottom: 1px solid #e0e0e0;
-  background-color: #fff;
+  background-color: var(--bg-color);
 }
 .header-left {
   display: flex;
@@ -56,8 +58,8 @@ const openLink = (url: string) => {
   width: 30px;
 }
 .header-title {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   color: #333;
 }
 

@@ -4,7 +4,6 @@ import Footer from './components/Footer/footer.vue';
 import Workspace from './components/Workspace/workspace.vue';
 import { useToolbarStore } from '@/store/toolbar';
 import { storeToRefs } from 'pinia';
-import { computed } from 'vue';
 
 const toolbarStore = useToolbarStore();
 const { isFullscreen } = storeToRefs(toolbarStore);
