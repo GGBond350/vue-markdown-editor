@@ -43,16 +43,16 @@ const gridColumnsStyle = computed(() => {
         <div class="workspace-item toolbar-container">
             <Toolbar :toolbar-items="defaultToolbarsConfig"></Toolbar>
         </div>
-        <div  v-show="isLeftSidebarVisible" class="workspace-item left-container">
+        <div  v-if="isLeftSidebarVisible" class="workspace-item left-container">
            <component :is="leftSidebarComponent" />
         </div>
-        <div v-show="!isOnlyPreview" class="workspace-item editor-container">
+        <div v-if="!isOnlyPreview" class="workspace-item editor-container">
             <Editor />
         </div>
-        <div v-show="!isOnlyWrite" class="workspace-item preview-container">
+        <div v-if="!isOnlyWrite" class="workspace-item preview-container">
             <Preview />
         </div>
-        <div v-show="isRightSidebarVisible" class="workspace-item right-container">
+        <div v-if="isRightSidebarVisible" class="workspace-item right-container">
             <component :is="rightSidebarComponent" />
         </div>
         <div class="workspace-item statusbar-container">
@@ -67,13 +67,14 @@ const gridColumnsStyle = computed(() => {
     display: grid;
     width: 100%;
     height: 100%;
+    border: 1px solid #e0e0e0;
     grid-template-rows: auto 1fr auto;
     grid-template-areas: 
         "toolbar toolbar toolbar toolbar"
         "left editor preview right"
         "statusbar statusbar statusbar statusbar";
-    gap: 10px;
     padding: 10px;
+    box-sizing: border-box; /* 确保padding和border不会影响总宽度 */
     transition: grid-template-columns 0.3s ease-in-out;
 }
 .workspace-item {

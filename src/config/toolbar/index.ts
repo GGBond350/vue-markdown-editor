@@ -25,6 +25,7 @@ import PreviewButton from "@/components/Toolbar/PreviewButton.vue";
 import WriteButton from "@/components/Toolbar/WriteButton.vue";
 import Emoji from "@/components/Toolbar/Emoji.vue";
 import { markRaw } from "vue";
+import FullScreenButton from "@/components/Toolbar/FullScreenButton.vue";
 
 export const defaultToolbarsConfig: ToolbarItem[] = [
 
@@ -199,9 +200,8 @@ export const defaultToolbarsConfig: ToolbarItem[] = [
     { type: 'separator' },
     {
         type: BaseToolbarType.FULLSCREEN,
-        title: "全屏",
-        icon: FullScreenIcon,
         hotkey: Hotkey.FULL_SCREEN.toConfig(),
+        component: markRaw(FullScreenButton),
     },
     {
       type : BaseToolbarType.SAVE,

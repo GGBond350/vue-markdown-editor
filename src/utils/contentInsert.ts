@@ -28,7 +28,6 @@ class ContentInsert {
             content = content.slice(0, start) + selectedText + content.slice(end);
             start = start + selectedText.length;
         } 
-
         view.dispatch({
             changes: {
                 from: range.from,
@@ -40,6 +39,28 @@ class ContentInsert {
                 head: range.from + start
             }
         })
+    }
+    // 模拟输入
+    public insertTextAtCursor(content: string) {
+        const view = this.editorView;
+        if (!view) return;
+
+        view.focus();
+        const range = view.state.selection.ranges[0];
+
+        // 插入内容，光标位置在内容末尾
+        view.dispatch({
+        changes: {
+            from: range.from,
+            to: range.to,
+            insert: content,
+        },
+        // 将光标移动到插入内容的末尾
+        selection: {
+            anchor: range.from + content.length,
+            head: range.from + content.length,
+        },
+        });
     }
 
     undo() {

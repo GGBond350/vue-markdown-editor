@@ -2,15 +2,21 @@
 import Header from './components/Header/header.vue';
 import Footer from './components/Footer/footer.vue';
 import Workspace from './components/Workspace/workspace.vue';
+import { useToolbarStore } from '@/store/toolbar';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+
+const toolbarStore = useToolbarStore();
+const { isFullscreen } = storeToRefs(toolbarStore);
 </script>
 
 <template>
   <div class="app-container">
-    <Header></Header>
+    <Header v-if="!isFullscreen"></Header>
     <main class="main-container">
         <Workspace />
-      </main>
-    <Footer></Footer>
+    </main>
+    <Footer v-if="!isFullscreen"></Footer>
   </div>
 </template>
 
@@ -38,9 +44,9 @@ import Workspace from './components/Workspace/workspace.vue';
 
 /* 3. 关键：这个样式现在被用上了 */
 .main-container {
-  display: flex;
   flex: 1; /* 关键：让主容器占据所有剩余的垂直空间 */
   overflow: hidden; /* 关键：防止其子元素溢出 */
+  margin: 10px;
 }
 
 </style>

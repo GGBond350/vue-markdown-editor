@@ -6,6 +6,9 @@
     <template #overlay>
       <Picker 
         :data="emojiIndex"
+        :i18n="i18n"
+        emojiTooltip
+        @select="insertEmojiEvent"
       />
     </template>
   </a-dropdown>
@@ -19,6 +22,24 @@ import EmojiIcon from '@/assets/images/emoji.svg?component';
 import { insertEmojiEvent } from '@/config/toolbar/event';
 
 const emojiIndex = new EmojiIndex(data);
+const i18n = {
+  search: '搜索',
+  notfound: '未找到表情',
+  categories: {
+    search: '搜索结果',
+    recent: '常用表情',
+    smileys: '笑脸与表情',
+    people: '人物',
+    nature: '动物与自然',
+    foods: '食物',
+    activity: '活动',
+    places: '地点',
+    objects: '物品',
+    symbols: '符号',
+    flags: '国旗',
+    custom: '自定义表情',
+  }
+}
 </script>
 
 <style scoped>

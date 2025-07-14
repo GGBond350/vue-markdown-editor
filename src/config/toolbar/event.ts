@@ -15,7 +15,7 @@ export function redoEvent() {
     contentInsert.redo();
 }
 
-export function insertEmojiEvent(emoji: string) {
-    contentInsert.insertContent(emoji, {start: 0, end: 0});
+export function insertEmojiEvent(emoji: any) {
+    contentInsert.insertTextAtCursor(emoji.native);
 }
 
