@@ -17,20 +17,18 @@ export const useThemeStore = defineStore("theme", () => {
 		setTheme(newTheme);
 	};
 
-	const initTheme = () => {
-		const savedTheme = localStorage.getItem('theme') as Theme | null;
-		if (savedTheme) {
-			setTheme(savedTheme);
-		} else {
-			const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-			setTheme(prefersDark ? 'dark' : 'light');
-		}
+	const savedTheme = localStorage.getItem('theme') as Theme | null;
+
+	if (savedTheme) {
+		setTheme(savedTheme);
+	} else {
+		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+		setTheme(prefersDark ? 'dark' : 'light');
 	}
 
 	return {
 		currentTheme,
 		setTheme,
 		toggleTheme,
-		initTheme
 	}
 })

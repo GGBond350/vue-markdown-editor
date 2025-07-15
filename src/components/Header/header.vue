@@ -60,11 +60,11 @@ const openLink = (url: string) => {
 .header-title {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: var(--text-color);
 }
 
 .themeIcon {
-    border: 1px solid #dcdfe6;
+    border: 1px solid var(--border-color);
     padding: 2px;
     border-radius: 6px;
 }
@@ -72,18 +72,18 @@ const openLink = (url: string) => {
 .iconStyle {
   width: 28px;
   height: 28px;
-  color: #606266;
+  color: var(--icon-color);
   cursor: pointer;
   transition: all 0.3s;
 }
 .iconStyle:not(.themeIcon):hover {
-    color: #333; /* 鼠标悬停时改变颜色 */
+    color: var(--icon-hover-bg);
     transform: scale(1.1); /* 鼠标悬停时放大 */
 }
 
 .themeIcon:hover {
-   color: #333;
-   border: 1px solid #404040;
+   color: var(--icon-hover-bg);
+   border: 1px solid var(--border-color);
    transform: scale(1.1); /* 鼠标悬停时放大 */
 }
 

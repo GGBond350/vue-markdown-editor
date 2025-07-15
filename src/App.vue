@@ -3,8 +3,9 @@ import Header from './components/Header/header.vue';
 import Footer from './components/Footer/footer.vue';
 import Workspace from './components/Workspace/workspace.vue';
 import { useToolbarStore } from '@/store/toolbar';
+import { useThemeStore } from './store/useThemeStore';
 import { storeToRefs } from 'pinia';
-
+useThemeStore(); // 初始化主题存储
 const toolbarStore = useToolbarStore();
 const { isFullscreen } = storeToRefs(toolbarStore);
 </script>
@@ -32,11 +33,11 @@ const { isFullscreen } = storeToRefs(toolbarStore);
 :deep(.header-root), :deep(.footer-root) {
   flex-shrink: 0; /* 防止被压缩 */
   padding: 10px 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color);
 }
 :deep(.footer-root) {
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--border-color);
   border-bottom: none;
 }
 

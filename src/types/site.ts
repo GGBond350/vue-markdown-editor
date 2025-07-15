@@ -7,6 +7,6 @@ export enum SiteType {
 export type SitebarItem = {
     name: string;
     description: string;
-   component: Component;
+    component?: Component;
     url: string;
 }

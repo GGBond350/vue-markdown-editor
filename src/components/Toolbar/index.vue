@@ -35,7 +35,7 @@ defineProps({
 
 <style scoped>  
 .toolbar-divider {
-    background-color: #e6e6e6;
+    background-color: var(--border-color);
     display: inline-block;
     height: 16px;
     margin: 0 8px;

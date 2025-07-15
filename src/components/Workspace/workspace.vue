@@ -67,7 +67,7 @@ const gridColumnsStyle = computed(() => {
     display: grid;
     width: 100%;
     height: 100%;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     grid-template-rows: auto 1fr auto;
     grid-template-areas: 
         "toolbar toolbar toolbar toolbar"
@@ -78,9 +78,9 @@ const gridColumnsStyle = computed(() => {
     transition: grid-template-columns 0.3s ease-in-out;
 }
 .workspace-item {
-    background-color: #fff;
+    background-color: var(--bg-color);
     border-radius: 4px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     overflow: hidden; /* 确保子内容不会溢出 */
     display: flex; /* 让子组件能撑满 */
     flex-direction: column;

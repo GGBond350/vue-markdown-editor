@@ -11,7 +11,7 @@ const { toggleOnlyWrite } = toolbarStore;
 const { isOnlyWrite } = storeToRefs(toolbarStore);
 
 const iconStyle = computed(() => {
-    return { color: isOnlyWrite.value ? '#409eff' : '#606266' };
+    return { color: isOnlyWrite.value ? 'var(--icon-color-active)' : 'var(--icon-color)' };
 });
 
 </script>

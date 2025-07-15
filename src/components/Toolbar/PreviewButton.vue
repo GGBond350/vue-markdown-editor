@@ -10,7 +10,7 @@ const { toggleOnlyPreview } = toolbarStore;
 const { isOnlyPreview } = storeToRefs(toolbarStore);
 
 const iconStyle = computed(() => {
-    return { color: isOnlyPreview.value ? '#409eff' : '#606266' };
+    return { color: isOnlyPreview.value ? 'var(--icon-color-active)' : 'var(--icon-color)' };
 });
 
 </script>
