@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { useEditorState } from '../../composables/useEditorState';
+import { useEditorState } from '../../composables/useEditor';
 const editorContainer = ref<HTMLDivElement | null>(null);
-const { content, initEditor} = useEditorState({
+const { initEditor } = useEditorState({
     defaultContent: 'Hello, this is a simple editor!',
     onContentChange(content) {
     },
@@ -10,7 +10,7 @@ const { content, initEditor} = useEditorState({
 
 onMounted(() => {
     if (editorContainer.value) {
-        initEditor(editorContainer.value);
+			initEditor(editorContainer.value);
     }
 });
 </script>
