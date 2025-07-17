@@ -38,7 +38,7 @@ const openLink = (url: string) => {
   display: flex;
   justify-content: space-between; /* 核心：两端对齐 */
   align-items: center; /* 垂直居中 */
-  padding: 0 20px; /* 左右留出边距 */
+  margin: 0 30px;
   height: 50px; /* 定义一个合适的高度 */
   background-color: var(--bg-color);
 }

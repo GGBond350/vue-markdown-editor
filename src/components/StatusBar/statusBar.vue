@@ -1,9 +1,12 @@
 <template>
     <div class="statusbar">
-        <span class="status-item">Line: {{ cursorRow }}</span>
-        <span class="status-item">Column: {{ cursorCol }}</span>
-				<span class="status-item">Lines: {{ lineCount }}</span>
-				<span class="status-item">Characters: {{ charCount }}</span>
+        <div class="statusbar-left">
+            <span class="status-item">行: {{ cursorRow }}, 列: {{ cursorCol }}</span>
+            <span class="status-item">行数: {{ lineCount }}</span>
+            <span class="status-item">字数: {{ charCount }}</span>
+        </div>
+        <div class="statusbar-right">right</div>
+        
     </div>
 </template>
 
@@ -15,3 +18,26 @@ const { charCount, lineCount, cursorCol, cursorRow } = storeToRefs(editorStore);
 
 
 </script>
+
+<style scoped> 
+
+.statusbar {
+  display: flex;
+  justify-content: space-between; /* 两端对齐 */
+  align-items: center; /* 垂直居中 */
+  padding: 10px 20px;
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.statusbar-left, .statusbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.status-item {
+  margin-right: 15px;
+  color: var(--text-color);
+}
+
+</style>

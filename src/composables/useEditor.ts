@@ -26,17 +26,7 @@ export function useEditorState(options: EditorStateOptions = {}) {
    const {
     defaultContent = "",
     isPersistent = true,
-    onContentChange = (newContent, update) => {
-			 const pos = update.state.selection.main.head;
-			 const line = update.state.doc.lineAt(pos);
-			 const stats = {
-				charCount: update.state.doc.length,
-				lineCount: update.state.doc.lines,
-				cursorCol: pos - line.from,
-				cursorRow: line.number
-			};
-			updateStats(stats);
-		},
+    onContentChange = () => {}, // 默认内容变化回调
     toolbars = defaultToolbarsConfig, // 使用我们刚创建的默认配置
     ...restOptions // 其他如 onDragUpload 等将直接传递给扩展
   } = options;
@@ -46,7 +36,6 @@ export function useEditorState(options: EditorStateOptions = {}) {
 	}
 
   const baseExtensions = [
-    lineNumbers(),
     keymap.of(markdownKeymap),
     keymap.of(defaultKeymap)
   ];
@@ -69,10 +58,21 @@ export function useEditorState(options: EditorStateOptions = {}) {
         ...baseExtensions,
 				...allExtensions,
         EditorView.updateListener.of((update: ViewUpdate) => {
-          if (update.docChanged) {
-            const newContent = update.state.doc.toString();
-            setContent(newContent, isPersistent); // 更新持久化内容
-						onContentChange(newContent, update);
+          if (update.docChanged || update.selectionSet) {
+            const pos = update.state.selection.main.head;
+            const line = update.state.doc.lineAt(pos);
+            const stats = {
+              charCount: update.state.doc.length,
+              lineCount: update.state.doc.lines,
+              cursorRow: line.number,
+              cursorCol: pos - line.from + 1 // 计算光标列位置
+            }
+            updateStats(stats); // 更新统计信息
+            if (update.docChanged) {
+              const newContent = update.state.doc.toString();
+              setContent(newContent, isPersistent); // 更新持久化内容
+              onContentChange(newContent, update);
+            }
           }
         }),
       ]
@@ -84,6 +84,16 @@ export function useEditorState(options: EditorStateOptions = {}) {
     });
     setEditorView(view);
     contentInsert.setEditorView(view);
+    // 初始化状态栏
+    const initialState = view.state;
+    const initialPos = initialState.selection.main.head;
+    const initialLine = initialState.doc.lineAt(initialPos);
+    updateStats( {
+      charCount: initialState.doc.length,
+      lineCount: initialState.doc.lines,
+      cursorRow: initialLine.number,
+      cursorCol: initialPos - initialLine.from + 1 // 计算光标列位置
+    });
   }
     // 更新编辑器内容
   const updateContent = (newContent: string) => {

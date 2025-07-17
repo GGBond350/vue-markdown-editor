@@ -46,7 +46,7 @@ const { isFullscreen } = storeToRefs(toolbarStore);
 .main-container {
   flex: 1; /* 关键：让主容器占据所有剩余的垂直空间 */
   overflow: hidden; /* 关键：防止其子元素溢出 */
-  margin: 10px;
+  margin: 10px 30px;
 }
 
 </style>
