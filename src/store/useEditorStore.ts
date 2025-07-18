@@ -13,6 +13,8 @@ export const useEditorStore = defineStore('editor', () => {
 	const previewContainer = shallowRef<HTMLElement | null>(null);
 
 	const currentScrollContainer = shallowRef<'editor' | 'preview' | null>(null);
+	const isSyncScroll = ref<boolean>(true);
+	const scrollToTop = ref<(() => void) | null>(null);
 
 	const charCount = ref<number>(0);
 	const lineCount = ref<number>(0);
@@ -38,9 +40,17 @@ export const useEditorStore = defineStore('editor', () => {
 	const setPreviewContainer = (container: HTMLElement | null) => {
 		previewContainer.value = container;
 	}
-	 const setCurrentScrollContainer = (container: 'editor' | 'preview' | null) => {
-    currentScrollContainer.value = container;
-  }
+
+	const setCurrentScrollContainer = (container: 'editor' | 'preview' | null) => {
+    	currentScrollContainer.value = container;
+  	}
+	const toggleSyncScroll = () => {
+		isSyncScroll.value = !isSyncScroll.value;
+	}
+
+	const setScrollToTopFunction = (fn: () => void) => {
+		scrollToTop.value = fn;
+	}
 
 	// 更新统计信息
 	const updateStats = (stats: {
@@ -66,12 +76,16 @@ export const useEditorStore = defineStore('editor', () => {
 		editorContainer,
 		previewContainer,
 		currentScrollContainer,
+		isSyncScroll,
+		scrollToTop,
 		setContent,
 		setEditorView,
 		setPreviewView,
 		updateStats,
 		setEditorContainer,
 		setPreviewContainer,
-		setCurrentScrollContainer
+		setCurrentScrollContainer,
+		toggleSyncScroll,
+		setScrollToTopFunction
 	}
 })

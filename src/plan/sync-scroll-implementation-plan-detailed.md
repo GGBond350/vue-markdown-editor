@@ -26,66 +26,57 @@ React 版本的核心是一个 `ScrollSynchronizer` 类，它不依赖简单的�
 
 ---
 
-## 第二步：创建 `useSyncScroll.ts` Composable 及 `ScrollSynchronizer` 类
+## 第二步：创建 `ScrollSynchronizer` 工具类
 
-**文件**: `src/composables/useSyncScroll.ts`
+**文件**: `src/utils/ScrollSynchronizer.ts`
 
-这是整个功能的核心，我们将在这里复现 React 版本的实现。
+这一步将纯粹的、与框架无关的滚动同步逻辑封装在一个独立的类中，以提高代码的可复用性和可测试性。
 
-### 2.1 `ScrollSynchronizer` 类的移植与适配
-
-我们将创建一个 `ScrollSynchronizer` 类，其内部方法和属性将严格参考 React 版本的实现。
+*   **职责**: 包含所有核心计算逻辑，如高度映射、比例滚动等。
+*   **实现**:
+    *   创建一个 `ScrollSynchronizer` 类。
+    *   将 React 版本 `handle-scroll.ts` 中的所有方法 (`computeHeightMapping`, `synchronizeScroll`, `performProportionalScroll` 等) 移植到这个类中。
+    *   确保该文件不包含任何 Vue 特有的 API (如 `ref`, `watch`)。
+    *   导出这个类 `export class ScrollSynchronizer { ... }`。
 
 ```typescript
-class ScrollSynchronizer {
+// src/utils/ScrollSynchronizer.ts
+import type { EditorView } from '@codemirror/view';
+
+export class ScrollSynchronizer {
   // 属性 (Properties)
   private readonly editorElementList: number[] = [];
   private readonly previewElementList: number[] = [];
   private static readonly BOTTOM_THRESHOLD = 1; // px
 
   // --- 核心公共方法 ---
-
   public handleEditorScroll(editorView: EditorView, previewView: HTMLElement): void {
-    // 对应 React 版本中的同名方法
     this.computeHeightMapping({ editorView, previewView });
     this.synchronizeScroll("editor", { editorView, previewView });
   }
 
   public handlePreviewScroll(previewView: HTMLElement, editorView: EditorView): void {
-    // 对应 React 版本中的同名方法
     this.computeHeightMapping({ editorView, previewView });
     this.synchronizeScroll("preview", { editorView, previewView });
   }
 
   public handleScrollTop(editorView: EditorView, previewView: HTMLElement): void {
-    // 对应 React 版本中的 scrollToTop 方法
     editorView.scrollDOM.scrollTo({ top: 0, behavior: 'smooth' });
     previewView.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // --- 内部实现细节 (Private Methods) ---
-
   private computeHeightMapping({ previewView, editorView }: { previewView: HTMLElement, editorView: EditorView }): void {
-    // 1. 清空旧映射
     this.editorElementList.length = 0;
     this.previewElementList.length = 0;
-
-    // 2. 获取 Preview 中所有带 data-line 的有效子节点
-    const validNodes = Array.from(previewView.children).filter(
-      node => node.hasAttribute('data-line')
-    );
-
-    // 3. 遍历节点，建立映射关系
+    const validNodes = Array.from(previewView.children).filter(node => node.hasAttribute('data-line'));
     validNodes.forEach(node => {
       const element = node as HTMLElement;
       const lineNumber = Number(element.dataset.line);
-      
-      // 4. 获取 CodeMirror 中对应行的信息
+      if (!lineNumber) return;
       const lineInfo = editorView.state.doc.line(lineNumber);
       if (!lineInfo) return;
       const blockInfo = editorView.lineBlockAt(lineInfo.from);
-
-      // 5. 将两边的 top 值存入数组
       this.editorElementList.push(blockInfo.top);
       this.previewElementList.push(element.offsetTop);
     });
@@ -94,27 +85,20 @@ class ScrollSynchronizer {
   private synchronizeScroll(source: "editor" | "preview", { editorView, previewView }: { previewView: HTMLElement, editorView: EditorView }): void {
     const sourceEl = source === 'editor' ? editorView.scrollDOM : previewView;
     const targetEl = source === 'editor' ? previewView : editorView.scrollDOM;
-
-    // 边界检查：顶部
     if (sourceEl.scrollTop <= 0) {
       targetEl.scrollTop = 0;
       return;
     }
-    // 边界检查：底部
     if (sourceEl.scrollTop + sourceEl.clientHeight + ScrollSynchronizer.BOTTOM_THRESHOLD >= sourceEl.scrollHeight) {
       targetEl.scrollTop = targetEl.scrollHeight - targetEl.clientHeight;
       return;
     }
-
-    // 执行核心比例滚动
     this.performProportionalScroll(sourceEl, targetEl, source);
   }
 
   private performProportionalScroll(sourceEl: Element, targetEl: Element, source: "editor" | "preview"): void {
     const sourceList = source === "editor" ? this.editorElementList : this.previewElementList;
     const targetList = source === "editor" ? this.previewElementList : this.editorElementList;
-    
-    // 1. 找到当前滚动位置在源映射数组中的索引
     let scrollIndex = -1;
     for (let i = 0; i < sourceList.length - 1; i++) {
       if (sourceEl.scrollTop >= sourceList[i] && sourceEl.scrollTop < sourceList[i + 1]) {
@@ -122,33 +106,41 @@ class ScrollSynchronizer {
         break;
       }
     }
-    if (scrollIndex === -1) return; // 未找到匹配区间
-
-    // 2. 计算在当前区间的滚动比例
+    if (scrollIndex === -1) return;
     const sourceStart = sourceList[scrollIndex];
     const sourceEnd = sourceList[scrollIndex + 1];
     const ratio = (sourceEl.scrollTop - sourceStart) / (sourceEnd - sourceStart);
-
-    // 3. 将比例应用到目标映射数组，计算出目标滚动位置
     const targetStart = targetList[scrollIndex];
     const targetEnd = targetList[scrollIndex + 1];
     const targetScrollTop = targetStart + (targetEnd - targetStart) * ratio;
-
-    // 4. 应用滚动
     targetEl.scrollTop = targetScrollTop;
   }
 }
 ```
 
-### 2.2 `useSyncScroll` Composable 的实现
+---
+
+## 第三步：创建 `useSyncScroll.ts` Composable
+
+**文件**: `src/composables/useSyncScroll.ts`
+
+这个 Composable 作为“连接器”，将 Vue 的响应式系统与 `ScrollSynchronizer` 工具类连接起来。
+
+*   **职责**:
+    1.  导入 `ScrollSynchronizer` 类并实例化。
+    2.  从 `useEditorStore` 获取响应式状态 (`isSyncScroll`, `editorView` 等)。
+    3.  设置 `watch` 来监听 DOM 元素是否就绪。
+    4.  在 `watch` 回调中，为 DOM 元素绑定滚动和鼠标事件处理器。
+    5.  创建事件处理器 (`handleEditorScroll` 等)，在内部调用 `synchronizer` 实例的相应方法。
+    6.  使用 `onUnmounted` 清理所有事件监听器。
+*   **实现**:
 
 ```typescript
+// src/composables/useSyncScroll.ts
 import { watch, onUnmounted } from 'vue';
 import { useEditorStore } from '@/store/useEditorStore';
 import { storeToRefs } from 'pinia';
-import type { EditorView } from '@codemirror/view';
-
-// ... 上面定义的 ScrollSynchronizer 类 ...
+import { ScrollSynchronizer } from '@/utils/ScrollSynchronizer';
 
 export function useSyncScroll() {
   const editorStore = useEditorStore();
@@ -170,38 +162,33 @@ export function useSyncScroll() {
     synchronizer.handleScrollTop(editorView.value, previewContainer.value);
   }
 
-  // 注册回到顶部函数到 Store
   editorStore.setScrollToTopFunction(scrollTop);
 
-  // 监听 DOM 元素准备就绪
   watch([editorView, previewContainer], ([newEditorView, newPreviewContainer]) => {
     if (newEditorView && newPreviewContainer) {
       const editorScrollEl = newEditorView.scrollDOM;
+      const previewScrollEl = newPreviewContainer;
+
       editorScrollEl.addEventListener('scroll', handleEditorScroll);
-      newPreviewContainer.addEventListener('scroll', handlePreviewScroll);
+      previewScrollEl.addEventListener('scroll', handlePreviewScroll);
       
       editorScrollEl.addEventListener('mouseenter', () => editorStore.setCurrentScrollContainer('editor'));
-      newPreviewContainer.addEventListener('mouseenter', () => editorStore.setCurrentScrollContainer('preview'));
+      previewScrollEl.addEventListener('mouseenter', () => editorStore.setCurrentScrollContainer('preview'));
+
+      onUnmounted(() => {
+        editorScrollEl.removeEventListener('scroll', handleEditorScroll);
+        previewScrollEl.removeEventListener('scroll', handlePreviewScroll);
+        editorScrollEl.removeEventListener('mouseenter', () => editorStore.setCurrentScrollContainer('editor'));
+        previewScrollEl.removeEventListener('mouseenter', () => editorStore.setCurrentScrollContainer('preview'));
+      }, newEditorView.dom); // 将 onUnmounted 绑定到 EditorView 的生命周期
     }
   }, { immediate: true });
-
-  // 清理副作用
-  onUnmounted(() => {
-    if (editorView.value) {
-      editorView.value.scrollDOM.removeEventListener('scroll', handleEditorScroll);
-      // ... 移除 mouseenter 监听
-    }
-    if (previewContainer.value) {
-      previewContainer.value.removeEventListener('scroll', handlePreviewScroll);
-      // ... 移除 mouseenter 监听
-    }
-  });
 }
 ```
 
 ---
 
-## 第三步：在 `Workspace.vue` 中启用
+## 第四步：在 `Workspace.vue` 中启用
 
 **文件**: `src/components/Workspace/workspace.vue`
 
@@ -209,7 +196,7 @@ export function useSyncScroll() {
 
 ---
 
-## 第四步：在 `StatusBar.vue` 中添加 UI
+## 第五步：在 `StatusBar.vue` 中添加 UI
 
 **文件**: `src/components/StatusBar/statusBar.vue`
 
