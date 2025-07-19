@@ -21,29 +21,64 @@ export class ScrollSynchronizer {
 
     // 计算编辑器和预览区域的对应关系
     private calculateHeightMapping({editorView, previewView}: SyncScrollInstances){
+        this.clearMapping();
 
+        const previewValidElements = this.getValidPreviewElements(previewView);
+
+        previewValidElements.forEach((element: HTMLElement) => {
+            const lineNumber = this.getLineNumber(element);
+
+            if (!this.isValidLineNumber(lineNumber, editorView)) return;
+
+            const editorLineInfo = this.getEditorLineInfo(editorView, lineNumber);
+            if (!editorLineInfo) return;
+
+            this.editorElementList.push(editorLineInfo.top);
+            this.previewElementList.push(element.offsetTop);    
+        });
     }
 
     // 同步滚动
     private synchronizeScroll(curArea: AreaType, {editorView, previewView}: SyncScrollInstances) {
+        const { scrollElement, targetElement } = this.getScrollElement(curArea, { editorView, previewView });
+        if (!scrollElement || !targetElement) return;
 
+        if (scrollElement.scrollTop <= 0) {
+            targetElement.scrollTop = 0;
+            return;
+        }
+
+        if (this.isScrolledToBottom(scrollElement)) {
+            this.scrollToBottom(targetElement);
+            return;
+        }
+        this.scrollByRatio(targetElement, scrollElement, curArea);
     }
 
     // 获取预览区域有效节点
-    private getPreviewElements(previewView: HTMLElement): HTMLElement[] {
-        
+    private getValidPreviewElements(previewView: HTMLElement): HTMLElement[] {
+        return Array.from(previewView.childNodes).filter((node: ChildNode) => {
+            const element = node as HTMLElement;
+            return !((element.nodeName === 'P' && element.clientHeight == 0) || element.nodeType === 3); // 只保留段落和文本节点
+        }) as HTMLElement[];
     }
 
     // 获取行号
     private getLineNumber(element: HTMLElement): number {
+        const lineNumber = element.getAttribute('data-line');
+        return lineNumber ? Number(lineNumber) : -1;
+
     }
 
     // 判断行号是否有效
     private isValidLineNumber(lineNumber: number, editorView: EditorView): boolean {
+        return lineNumber >= 0 && editorView.state?.doc && lineNumber < editorView.state.doc.lines;
     }
 
     // 获取编辑器行信息
     private getEditorLineInfo(editorView: EditorView, lineNumber: number) {
+        const line = editorView.state?.doc?.line(lineNumber);
+        return line ? editorView.lineBlockAt(line.from) : null;
     }
 
     // 清除编辑器和预览区域的映射关系
@@ -53,7 +88,12 @@ export class ScrollSynchronizer {
     }
 
     // 获取滚动元素
-    private getScrollElement(curArea: AreaType, {editorView, previewView}: SyncScrollInstances): HTMLElement {
+    private getScrollElement(curArea: AreaType, {editorView, previewView}: SyncScrollInstances) {
+
+        const scrollElement = curArea === 'editor' ? editorView.scrollDOM : previewView;
+        const targetElement = curArea === 'editor' ? previewView : editorView.scrollDOM;
+
+        return { scrollElement, targetElement };
     }
 
     // 判断是否滚动到底部
@@ -75,6 +115,11 @@ export class ScrollSynchronizer {
 
     // 滚动到底部
     private scrollToBottom(targetElement: HTMLElement): void {
+        const targetScrollTop = targetElement.scrollHeight - targetElement.clientHeight;
+        const currentScrollTop = targetElement.scrollTop;
+        const scrollDistance = targetScrollTop - currentScrollTop;
+        
+
     }
 
     // 比例滚动
