@@ -118,13 +118,37 @@ export class ScrollSynchronizer {
         const targetScrollTop = targetElement.scrollHeight - targetElement.clientHeight;
         const currentScrollTop = targetElement.scrollTop;
         const scrollDistance = targetScrollTop - currentScrollTop;
-        
 
+				const animate = (timeStamp: number, startTime?: number) => {
+					if (!startTime) startTime = timeStamp;
+					const elapsed = timeStamp - startTime;
+
+					const progress = Math.min(elapsed / ScrollSynchronizer.SCROLL_ANIMATION_DURATION, 1);
+
+					targetElement.scrollTop = currentScrollTop + scrollDistance * progress;
+
+					if (progress < 1) {
+						requestAnimationFrame((ts) => animate(ts, startTime));
+					}
+
+				}
+				requestAnimationFrame(animate);
     }
 
     // 比例滚动
     private scrollByRatio(targetElement: HTMLElement, scrollElement: HTMLElement, curArea: AreaType): void {
+			const sourceList = curArea === 'editor' ? this.editorElementList : this.previewElementList;
+			const targetList = curArea === 'editor' ? this.previewElementList : this.editorElementList;
+			const scrollTop = scrollElement.scrollTop;
 
+			const index = this.getScrollIndex(sourceList, scrollTop);
+
+			if (index < 0 || index >= sourceList.length - 1) return;
+			const { ratio, targetScrollTop } = this.calculateScrollPosition(index, sourceList, targetList, scrollTop);
+			if (ratio < 0 || ratio > 1) return;
+			requestAnimationFrame(() => {
+				targetElement.scrollTop = targetScrollTop;
+			});
     }
 
     // 获取滚动索引
