@@ -1,19 +1,26 @@
-import { EditorState, type Extension,} from "@codemirror/state";
+import { EditorState, type Extension, Compartment } from "@codemirror/state";
 import { EditorView, keymap, lineNumbers, ViewUpdate } from "@codemirror/view"
 import { onUnmounted, ref, shallowRef, watch } from "vue";
-import { markdown, markdownKeymap } from "@codemirror/lang-markdown";
-import { defaultKeymap } from "@codemirror/commands";
 import { createExtensions, type ExtensionsOptions } from "@/extensions/codemirror";
 import { defaultToolbarsConfig } from "@/config/toolbar";
 import contentInsert from "@/utils/contentInsert";
 import { useEditorStore } from "@/store/useEditorStore";
+import { useThemeStore } from "@/store/useThemeStore";
 import { storeToRefs } from "pinia";
+import { githubLight, githubDark } from '@uiw/codemirror-theme-github';
 import { handleEditorScroll } from "@/utils/ScrollSynchronizer";
-import { oneDark } from "@codemirror/theme-one-dark";
-
-
-
-export interface EditorStateOptions extends ExtensionsOptions { 
+export const themeCompartment = new Compartment();
+const darkModeThemes = [githubDark,  
+		EditorView.theme({
+			"&": {
+				backgroundColor: "#242424 !important",
+			},
+			".cm-gutters": {
+				backgroundColor: "#242424 !important", 
+			},
+		}, { dark: true })
+];
+export interface EditorStateOptions extends ExtensionsOptions {
 
   defaultContent?: string; // 默认内容
   isPersistent?: boolean; // 是否持久化
@@ -22,6 +29,8 @@ export interface EditorStateOptions extends ExtensionsOptions {
 
 export function useEditorState(options: EditorStateOptions = {}) {
 	const editorStore = useEditorStore();
+	const themeStore = useThemeStore();
+	const isDarkMode = themeStore.currentTheme === 'dark';
 	const { setContent, setEditorView, updateStats } = editorStore;
 	const { content, editorView, editorContainer, isSyncScroll, previewView, currentScrollContainer} = storeToRefs(editorStore);
    const {
@@ -36,12 +45,6 @@ export function useEditorState(options: EditorStateOptions = {}) {
 		setContent(defaultContent, isPersistent); // 初始化内容
 	}
 
-  const baseExtensions = [
-    keymap.of(markdownKeymap),
-    keymap.of(defaultKeymap),
-    oneDark,
-  ];
-  
   const initEditor = (el: HTMLElement) => {
     if (!el) {
       console.error("Editor container element is not provided.");
@@ -60,14 +63,14 @@ export function useEditorState(options: EditorStateOptions = {}) {
     const allExtensions: Extension[] = createExtensions({
       ...restOptions,
       toolbars,
-       eventExt
+			eventExt
     });
     // 编辑器状态
     const state = EditorState.create({
       doc: content.value,
       extensions: [
-        ...baseExtensions,
 				...allExtensions,
+				themeCompartment.of(isDarkMode ? darkModeThemes : githubLight),
         EditorView.updateListener.of((update: ViewUpdate) => {
           if (update.docChanged || update.selectionSet) {
             const pos = update.state.selection.main.head;
@@ -121,11 +124,23 @@ export function useEditorState(options: EditorStateOptions = {}) {
         }
       }); 
   };
+
   watch(()=> options.defaultContent, (newContent) => {
     if (newContent !== undefined && editorView.value && editorView.value.state.doc.toString() !== newContent) {
       updateContent(newContent);
     }
   });
+
+	watch(() => themeStore.currentTheme, (newTheme) => {
+		if (editorView.value) {
+			const isDarkMode = newTheme === 'dark';
+			editorView.value.dispatch({
+				effects: themeCompartment.reconfigure(isDarkMode ? darkModeThemes : githubLight)
+			});
+		}
+	})
+
+
   onUnmounted(() => {
     if (editorView.value) {
       editorView.value.destroy(); // 销毁编辑器视图

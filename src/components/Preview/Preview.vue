@@ -32,6 +32,7 @@ const randomHeights = Array.from({ length: 100 }, () => 20 + Math.random() * 30)
         display: 'flex',
         alignItems: 'center'
       }"
+			class="preview-line"
     >
       这是 Preview 的第 {{ i }} 行，模拟对应 Editor 的第 {{ i }} 行。
     </div>
@@ -47,6 +48,9 @@ const randomHeights = Array.from({ length: 100 }, () => 20 + Math.random() * 30)
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   color: #333;
+}
+.preview-line {
+	color: var(--text-color);
 }
 
 </style>

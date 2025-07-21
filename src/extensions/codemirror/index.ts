@@ -1,6 +1,6 @@
 import type { ToolbarItem } from "@/types/toolbar";
 import { createEventExtensions, type EventExtensionOptions } from "./event"
-import type { Extension } from "@codemirror/state";
+import { type Extension } from "@codemirror/state";
 import { createMarkdownExtensions } from "./markdown";
 import { history } from "@codemirror/commands";
 import { EditorView } from "codemirror";
@@ -28,7 +28,8 @@ export const createExtensions = (options: ExtensionsOptions): Extension[] => {
             onPasteUpload
         }),
         history(),
-       EditorView.lineWrapping,
+       	EditorView.lineWrapping,
+
     ];
     if (enableShotcut && options.toolbars) {
        extensions.push(
