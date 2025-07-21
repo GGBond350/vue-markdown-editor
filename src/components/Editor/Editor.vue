@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { useEditorStore } from '@/store/useEditorStore';
 import { useEditorState } from '../../composables/useEditor';
 const editorContainer = ref<HTMLDivElement | null>(null);
+const editorStore = useEditorStore();
+const { setCurrentScrollContainer } = editorStore;
 const { initEditor } = useEditorState({
     defaultContent: 'Hello, this is a simple editor!',
     onContentChange(content) {
     },
 });
+
+const handleMouseEnter = () => {
+  setCurrentScrollContainer('editor');
+};
 
 onMounted(() => {
     if (editorContainer.value) {
@@ -16,13 +23,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="editorContainer" class="editor-instance-container"></div>
+  <div ref="editorContainer" class="editor-instance-container" @mouseenter="handleMouseEnter"></div>
 </template>
 
 <style scoped>
 .editor-instance-container {
   width: 100%;
   height: 100%; /* 继承来自Grid单元格的高度 */
-  overflow-y: auto; /* 关键：在这里实现滚动！*/
+}
+.editor-instance-container :deep(.cm-editor) {
+  height: 100%;
+}
+.editor-instance-container :deep(.cm-scroller) {
+  height: 100%;
 }
 </style>

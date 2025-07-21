@@ -3,18 +3,23 @@ import { defineStore } from "pinia";
 import { ref, shallowRef} from "vue";
 
 const STORAGE_KEY = 'vue-markdown-editor-content';
+const SYNC_SCROLL_STATUS_KEY = 'sync_scroll_status';
+
 export const useEditorStore = defineStore('editor', () => {
 	const content = ref<string>(localStorage.getItem(STORAGE_KEY) || '');
 
 	const editorView = ref<EditorView | null>(null);
 	const editorContainer = shallowRef<HTMLElement | null>(null);
 
-	const previewView = ref<EditorView | null>(null);
-	const previewContainer = shallowRef<HTMLElement | null>(null);
+	const previewView = ref<HTMLElement | null>(null);
 
 	const currentScrollContainer = shallowRef<'editor' | 'preview' | null>(null);
-	const isSyncScroll = ref<boolean>(true);
-	const scrollToTop = ref<(() => void) | null>(null);
+	const isSyncScroll = ref<boolean>(
+		(() => {
+			const savedStatus = localStorage.getItem(SYNC_SCROLL_STATUS_KEY);
+			return savedStatus !== null ? savedStatus === 'true' : true;
+		})()
+	);
 
 	const charCount = ref<number>(0);
 	const lineCount = ref<number>(0);
@@ -30,15 +35,9 @@ export const useEditorStore = defineStore('editor', () => {
 	const setEditorView = (view: EditorView | null) => {
 		editorView.value = view;
 	}
-	const setEditorContainer = (container: HTMLElement | null) => {
-		editorContainer.value = container;
-	}
 
-	const setPreviewView = (view: EditorView | null) => {
+	const setPreviewView = (view: HTMLElement | null) => {
 		previewView.value = view;
-	}
-	const setPreviewContainer = (container: HTMLElement | null) => {
-		previewContainer.value = container;
 	}
 
 	const setCurrentScrollContainer = (container: 'editor' | 'preview' | null) => {
@@ -46,10 +45,7 @@ export const useEditorStore = defineStore('editor', () => {
   	}
 	const toggleSyncScroll = () => {
 		isSyncScroll.value = !isSyncScroll.value;
-	}
-
-	const setScrollToTopFunction = (fn: () => void) => {
-		scrollToTop.value = fn;
+		localStorage.setItem(SYNC_SCROLL_STATUS_KEY, String(isSyncScroll.value));
 	}
 
 	// 更新统计信息
@@ -74,18 +70,13 @@ export const useEditorStore = defineStore('editor', () => {
 		cursorRow,
 		cursorCol,
 		editorContainer,
-		previewContainer,
 		currentScrollContainer,
 		isSyncScroll,
-		scrollToTop,
 		setContent,
 		setEditorView,
 		setPreviewView,
 		updateStats,
-		setEditorContainer,
-		setPreviewContainer,
 		setCurrentScrollContainer,
-		toggleSyncScroll,
-		setScrollToTopFunction
+		toggleSyncScroll
 	}
 })

@@ -1,4 +1,4 @@
-import type { EditorView } from "codemirror";
+import  { EditorView } from "@codemirror/view";
 
 
 interface SyncScrollInstances {
@@ -25,7 +25,7 @@ export class ScrollSynchronizer {
 
         const previewValidElements = this.getValidPreviewElements(previewView);
 
-        previewValidElements.forEach((element: HTMLElement) => {
+        previewValidElements.forEach((element) => {
             const lineNumber = this.getLineNumber(element);
 
             if (!this.isValidLineNumber(lineNumber, editorView)) return;
@@ -34,7 +34,7 @@ export class ScrollSynchronizer {
             if (!editorLineInfo) return;
 
             this.editorElementList.push(editorLineInfo.top);
-            this.previewElementList.push(element.offsetTop);    
+            this.previewElementList.push((element as HTMLElement).offsetTop);
         });
     }
 
@@ -56,15 +56,15 @@ export class ScrollSynchronizer {
     }
 
     // 获取预览区域有效节点
-    private getValidPreviewElements(previewView: HTMLElement): HTMLElement[] {
+    private getValidPreviewElements(previewView: HTMLElement): Element[] {
         return Array.from(previewView.childNodes).filter((node: ChildNode) => {
             const element = node as HTMLElement;
             return !((element.nodeName === 'P' && element.clientHeight == 0) || element.nodeType === 3); // 只保留段落和文本节点
-        }) as HTMLElement[];
+        }) as Element[];
     }
 
     // 获取行号
-    private getLineNumber(element: HTMLElement): number {
+    private getLineNumber(element: Element): number {
         const lineNumber = element.getAttribute('data-line');
         return lineNumber ? Number(lineNumber) : -1;
 
@@ -114,7 +114,7 @@ export class ScrollSynchronizer {
     }
 
     // 滚动到底部
-    private scrollToBottom(targetElement: HTMLElement): void {
+    private scrollToBottom(targetElement: Element): void {
         const targetScrollTop = targetElement.scrollHeight - targetElement.clientHeight;
         const currentScrollTop = targetElement.scrollTop;
         const scrollDistance = targetScrollTop - currentScrollTop;
@@ -136,7 +136,7 @@ export class ScrollSynchronizer {
     }
 
     // 比例滚动
-    private scrollByRatio(targetElement: HTMLElement, scrollElement: HTMLElement, curArea: AreaType): void {
+    private scrollByRatio(targetElement: Element, scrollElement: Element, curArea: AreaType): void {
 			const sourceList = curArea === 'editor' ? this.editorElementList : this.previewElementList;
 			const targetList = curArea === 'editor' ? this.previewElementList : this.editorElementList;
 			const scrollTop = scrollElement.scrollTop;
@@ -154,7 +154,7 @@ export class ScrollSynchronizer {
     // 获取滚动索引
     private getScrollIndex(sourceList: number[], scrollTop: number): number {
        for (let i = 0; i < sourceList.length - 1; i++) {
-        if (scrollTop < sourceList[i]) return i;
+        if (scrollTop < sourceList[i + 1]) return i;
        }
        return sourceList.length - 1;
     }
@@ -171,7 +171,7 @@ export class ScrollSynchronizer {
             }
         }
 
-        const ratio = Math.min(0, Math.max(1, (scrollTop - sourceList[index]) / sourceDistance));
+        const ratio = Math.max(0, Math.min(1, (scrollTop - sourceList[index]) / sourceDistance));
         let targetScrollTop = targetList[index] + ratio * targetDistance;
 
         if (targetScrollTop < 0) {

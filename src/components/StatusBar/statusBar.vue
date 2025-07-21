@@ -5,17 +5,29 @@
             <span class="status-item">行数: {{ lineCount }}</span>
             <span class="status-item">字数: {{ charCount }}</span>
         </div>
-        <div class="statusbar-right">right</div>
+        <div class="statusbar-right">
+          <a-checkbox :checked="isSyncScroll" @change="toggleSyncScroll">同步滚动</a-checkbox>
+          <a-button class="status-item" @click="handleAreaScrollToTop">回到顶部</a-button>
+        </div>
         
     </div>
 </template>
 
 <script setup lang="js">
 import { useEditorStore } from '@/store/useEditorStore';
+import { handleScrollToTop } from '@/utils/ScrollSynchronizer';
 import { storeToRefs } from 'pinia';
 const editorStore = useEditorStore();
-const { charCount, lineCount, cursorCol, cursorRow } = storeToRefs(editorStore);
-
+const { toggleSyncScroll } = editorStore;
+const { isSyncScroll, charCount, lineCount, cursorCol, cursorRow, editorView, previewView } = storeToRefs(editorStore);
+const handleAreaScrollToTop = () => {
+  if (editorView.value && previewView.value) {
+   handleScrollToTop({
+      editorView: editorView.value,
+      previewView: previewView.value
+    });
+  }
+};
 
 </script>
 

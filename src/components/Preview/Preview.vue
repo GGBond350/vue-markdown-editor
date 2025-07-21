@@ -2,20 +2,26 @@
 import { useEditorStore } from '@/store/useEditorStore';
 import { onMounted, ref } from 'vue';
 
-
+import { usePreviewState } from '@/composables/usePreview';
 const editorStore = useEditorStore();
+const { setCurrentScrollContainer } = editorStore;
 const previewContainer = ref<HTMLDivElement | null>(null);
+
+
+const handleMouseEnter = () => {
+  setCurrentScrollContainer('preview');
+};
 
 onMounted(() => {
   if (previewContainer.value) {
-    editorStore.setPreviewContainer(previewContainer.value);
+    usePreviewState().initPreview(previewContainer.value);
   }
 });
 const randomHeights = Array.from({ length: 100 }, () => 20 + Math.random() * 30);
 </script>
 
 <template>
-  <div ref="previewContainer" class="preview-container">
+  <div ref="previewContainer" class="preview-container" @mouseenter="handleMouseEnter">
     <div
       v-for="i in 100"
       :key="i"

@@ -2,13 +2,14 @@ import { EditorState, type Extension,} from "@codemirror/state";
 import { EditorView, keymap, lineNumbers, ViewUpdate } from "@codemirror/view"
 import { onUnmounted, ref, shallowRef, watch } from "vue";
 import { markdown, markdownKeymap } from "@codemirror/lang-markdown";
-import { languages } from "@codemirror/language-data";
 import { defaultKeymap } from "@codemirror/commands";
 import { createExtensions, type ExtensionsOptions } from "@/extensions/codemirror";
 import { defaultToolbarsConfig } from "@/config/toolbar";
 import contentInsert from "@/utils/contentInsert";
 import { useEditorStore } from "@/store/useEditorStore";
 import { storeToRefs } from "pinia";
+import { handleEditorScroll } from "@/utils/ScrollSynchronizer";
+import { oneDark } from "@codemirror/theme-one-dark";
 
 
 
@@ -22,7 +23,7 @@ export interface EditorStateOptions extends ExtensionsOptions {
 export function useEditorState(options: EditorStateOptions = {}) {
 	const editorStore = useEditorStore();
 	const { setContent, setEditorView, updateStats } = editorStore;
-	const { content, editorView, editorContainer } = storeToRefs(editorStore);
+	const { content, editorView, editorContainer, isSyncScroll, previewView, currentScrollContainer} = storeToRefs(editorStore);
    const {
     defaultContent = "",
     isPersistent = true,
@@ -37,7 +38,8 @@ export function useEditorState(options: EditorStateOptions = {}) {
 
   const baseExtensions = [
     keymap.of(markdownKeymap),
-    keymap.of(defaultKeymap)
+    keymap.of(defaultKeymap),
+    oneDark,
   ];
   
   const initEditor = (el: HTMLElement) => {
@@ -46,10 +48,19 @@ export function useEditorState(options: EditorStateOptions = {}) {
       return;
     }
     editorContainer.value = el;
+    const eventExt = EditorView.domEventHandlers({
+      scroll: () => {
+        if (currentScrollContainer.value !== 'editor')  return;
+        const view = editorView.value;
+        if (!(view && previewView.value && isSyncScroll.value)) return;
 
+        handleEditorScroll({editorView: view as EditorView, previewView: previewView.value});
+      }
+    })
     const allExtensions: Extension[] = createExtensions({
       ...restOptions,
-      toolbars
+      toolbars,
+       eventExt
     });
     // 编辑器状态
     const state = EditorState.create({
@@ -77,13 +88,14 @@ export function useEditorState(options: EditorStateOptions = {}) {
         }),
       ]
     });
+    console.log("Editor state initialized with extensions:", allExtensions);
     // 编辑器视图
    const view = new EditorView({
       state,
       parent: el
     });
     setEditorView(view);
-    contentInsert.setEditorView(view);
+    contentInsert.setEditorView(view); 
     // 初始化状态栏
     const initialState = view.state;
     const initialPos = initialState.selection.main.head;
