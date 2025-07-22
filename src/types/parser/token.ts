@@ -37,7 +37,7 @@ export type TokensTypes = Record<TokenTypesKeys, TokenTypesValues>;
 type PositionType = {
    line: number; // 行号
    column: number; // 列号
-    offset: number; // 偏移量
+	 offset: number; // 偏移量
 }
 type TokenPositionType = {
    start: PositionType;

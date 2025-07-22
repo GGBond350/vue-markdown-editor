@@ -5,6 +5,10 @@ import { createMarkdownExtensions } from "./markdown";
 import { history } from "@codemirror/commands";
 import { EditorView } from "codemirror";
 import { createHotkeysExtension } from "./hotkey";
+import { defaultKeymap } from "@codemirror/commands";
+import { keymap, highlightActiveLine } from "@codemirror/view";
+import { indentOnInput } from "@codemirror/language";
+import { markdownKeymap } from "@codemirror/lang-markdown";
 
 export type ExtensionsOptions = EventExtensionOptions & {
     enableShotcut?: boolean;
@@ -29,7 +33,9 @@ export const createExtensions = (options: ExtensionsOptions): Extension[] => {
         }),
         history(),
        	EditorView.lineWrapping,
-
+				keymap.of([...defaultKeymap, ...markdownKeymap]),
+				highlightActiveLine(),
+				indentOnInput(),
     ];
     if (enableShotcut && options.toolbars) {
        extensions.push(
