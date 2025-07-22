@@ -1,4 +1,4 @@
-import type { ToolbarItem } from "@/types/toolbar";
+import type { ToolbarItem } from "@/types/editor/toolbar";
 import { createEventExtensions, type EventExtensionOptions } from "./event"
 import { type Extension } from "@codemirror/state";
 import { createMarkdownExtensions } from "./markdown";

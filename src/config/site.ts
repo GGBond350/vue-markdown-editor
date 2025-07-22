@@ -1,4 +1,4 @@
-import type { SitebarItem } from "@/types/site";
+import type { SitebarItem } from "@/types/editor/site";
 import GithubIcon from "@/assets/images/github-fill.svg?component";
 import GiteeIcon from "@/assets/images/gitee.svg?component";
 

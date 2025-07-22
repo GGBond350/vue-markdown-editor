@@ -2,7 +2,7 @@
 import { useToolbarStore } from '@/store/toolbar';
 import fullscreenIcon from "@/assets/images/fullscreen.svg?component";
 import ExitFullscreenIcon from "@/assets/images/exit-fullscreen.svg?component";
-import { BaseToolbarType } from '@/types/toolbar';
+import { BaseToolbarType } from '@/types/editor/toolbar';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 import { Hotkey } from '@/config/hotkeys';

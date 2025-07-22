@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ToolbarItem } from '@/types/toolbar';
+import type { ToolbarItem } from '@/types/editor/toolbar';
 import type { PropType } from 'vue';
 import ToolbarButton from './ToolbarButton.vue';
 import ToolbarDropdown from './ToolbarDropdown.vue';

@@ -3,7 +3,7 @@ import { useToolbarStore } from '@/store/toolbar';
 import HelpIcon from "@/assets/images/help.svg"
 import { storeToRefs } from 'pinia';
 import Help from '@/components/Sidebar/Help.vue';
-import { BaseToolbarType } from '@/types/toolbar';
+import { BaseToolbarType } from '@/types/editor/toolbar';
 import { computed } from 'vue';
 
 const toolbarStore = useToolbarStore();

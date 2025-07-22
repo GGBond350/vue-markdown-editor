@@ -15,7 +15,7 @@
 
 </template>
 <script setup lang="ts">
-import type { ToolbarItem } from '@/types/toolbar';
+import type { ToolbarItem } from '@/types/editor/toolbar';
 import { computed } from 'vue';
 import { useToolbarStore } from '@/store/toolbar';
 import { storeToRefs } from 'pinia';

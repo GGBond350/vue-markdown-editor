@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ToolbarItem } from '@/types/toolbar';
+import type { ToolbarItem } from '@/types/editor/toolbar';
 import type { ItemType } from 'ant-design-vue';
 import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface';
 import { computed, ref } from 'vue';

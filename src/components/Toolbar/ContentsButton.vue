@@ -3,7 +3,7 @@ import { useToolbarStore } from '@/store/toolbar';
 import ContentsIcon from "@/assets/images/contents.svg?component";
 import { storeToRefs } from 'pinia';
 import Contents from '@/components/Sidebar/Contents.vue';
-import { BaseToolbarType } from '@/types/toolbar';
+import { BaseToolbarType } from '@/types/editor/toolbar';
 import { computed } from 'vue';
 
 const toolbarStore = useToolbarStore();

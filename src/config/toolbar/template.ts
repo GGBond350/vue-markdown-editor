@@ -1,4 +1,4 @@
-import type { ToolbarType } from "@/types/toolbar";
+import type { ToolbarType } from "@/types/editor/toolbar";
 
 export type ToolbarTemplateValue = {
     content: string; // 模板内容

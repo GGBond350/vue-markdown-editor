@@ -1,7 +1,7 @@
 <script lang="ts" setup> 
 import { useToolbarStore } from '@/store/toolbar';
 import WriteIcon from "@/assets/images/write.svg?component"
-import { BaseToolbarType } from '@/types/toolbar';
+import { BaseToolbarType } from '@/types/editor/toolbar';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
 

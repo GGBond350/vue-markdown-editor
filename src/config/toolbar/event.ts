@@ -1,4 +1,4 @@
-import type { ToolbarType } from "@/types/toolbar";
+import type { ToolbarType } from "@/types/editor/toolbar";
 import { toolbarTemplate, type ToolbarTemplateValue } from "./template";
 import contentInsert from "@/utils/contentInsert";
 

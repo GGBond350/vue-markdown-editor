@@ -1,6 +1,6 @@
 import type { Extension } from "@codemirror/state";
 import { keymap } from "@codemirror/view";
-import type {ToolbarItem} from "@/types/toolbar";
+import type {ToolbarItem} from "@/types/editor/toolbar";
 import { createHotkeyHandler, type HotkeyHandler } from "@/utils/hotkeyHandler";
 
 

@@ -1,6 +1,6 @@
 import { insertContentEvent } from "@/config/toolbar/event";
 import { useToolbarStore } from "@/store/toolbar";
-import { BaseToolbarType, type ToolbarItem, type ToolbarType } from "@/types/toolbar";
+import { BaseToolbarType, type ToolbarItem, type ToolbarType } from "@/types/editor/toolbar";
 
 
 /**

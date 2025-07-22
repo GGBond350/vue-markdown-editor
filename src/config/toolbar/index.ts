@@ -1,4 +1,4 @@
-import { BaseToolbarType, type ToolbarItem } from "@/types/toolbar";
+import { BaseToolbarType, type ToolbarItem } from "@/types/editor/toolbar";
 import HeadingIcon from "@/assets/images/heading.svg?component"
 import BoldIcon from "@/assets/images/bold.svg?component"
 import ItalicIcon from "@/assets/images/italic.svg?component"
