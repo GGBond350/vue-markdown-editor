@@ -63,7 +63,7 @@ export type Tokens = {
     meta?: string | null; // 代码块的meta(```js [meta])
 
     children?: Tokens[]; // 子节点
-    position?: TokenPositionType; // 位置
+    position: TokenPositionType; // 位置
 }
 
 export type RootTokens = {
