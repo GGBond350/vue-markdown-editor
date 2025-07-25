@@ -7,6 +7,7 @@ export const parseThematicBreak = ({
 	root,
 	resetCurrentStatus
 }: ParseFnParams) => {
+	 // todo 解决解析遇到空格
 	if (!/^(?:-{3,}|[*]{3,})$/.test(trimmedLine)) return;
 	
 	root.children.push({

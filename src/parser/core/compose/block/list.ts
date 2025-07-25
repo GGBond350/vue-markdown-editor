@@ -9,7 +9,7 @@ export const parseList = ({
 	resetCurrentStatus,
 }: ParseFnParams) => {
 	// 处理列表中断
-
+	 // todo 解决解析遇到空格
 	if (currentStatus.currentList && index > 0) {
 		const previousLine = lines[index - 1].trimStart();
 		const isPreviousLineList = /^(-|\d+\.)\s+.*/.test(previousLine);

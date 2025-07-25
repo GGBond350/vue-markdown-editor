@@ -2,7 +2,7 @@ import type { ParseFnParams, Tokens } from "@/types/parser/token";
 import { parseInlineElements } from "../inline";
 
 export const parseHeading = ({ trimmedLine, index, currentOffset, root, resetCurrentStatus }: ParseFnParams) => {
-
+     // todo 解决解析遇到空格
     for (let d = 1; d <= 6; d++) {
         const headingPrefix = '#'.repeat(d) + ' ';
         if (trimmedLine.startsWith(headingPrefix)) {

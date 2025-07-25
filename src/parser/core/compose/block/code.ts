@@ -1,6 +1,8 @@
 import type { ParseFnParams, Tokens } from "@/types/parser/token";
 
 export const parseCode = ({ line, lines, trimmedLine, index, currentOffset, currentStatus, root }: ParseFnParams) => {
+   
+    // todo 解决解析遇到空格
     if (trimmedLine.startsWith("```")) {
         // 处理代码块
         if (!currentStatus.isCodeBlock) {
