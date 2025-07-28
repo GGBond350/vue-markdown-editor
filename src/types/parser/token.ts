@@ -87,7 +87,7 @@ export type ParseFnParams =  {
         depth: number | null; // 当前标题深度
         currentBlockquote: Tokens | null; // 当前引用块
 
-        isCodeBlock: boolean; // 是否在代码块中
+        inCodeBlock: boolean; // 是否在代码块中
         codeBlockLang: string; // 代码块语言
         codeBlockValue: string; // 代码块内容
         codeBlockStartOffset: number; // 代码块开始偏移量
