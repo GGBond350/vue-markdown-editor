@@ -42,6 +42,5 @@ export const createExtensions = (options: ExtensionsOptions): Extension[] => {
         createHotkeysExtension(options.toolbars)
        )
     }
-
     return extensions;
 }

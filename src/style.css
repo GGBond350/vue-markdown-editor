@@ -10,11 +10,30 @@ html.light {
   --link-color: #646cff;
   --link-hover-color: #747bff;
   --button-bg: #f9f9f9;
+  
+  /* 预览区域主题变量 */
+  --heading-color: #3f4a54;
+  --inline-code-color: #3594f7;
+  --inline-code-bg: rgba(59, 170, 250, 0.1);
+  --link-preview-color: #2d8cf0;
+  --link-preview-hover: #73d13d;
+  --image-border: #e6e6e6;
+  --hr-color: #e6e6e6;
+  --blockquote-border: #d0d7de;
+  --blockquote-color: #3f4a54;
+  --table-border: #ddd;
+  --table-header-bg: #f2f2f2;
+  --table-hover-bg: #f5f5f5;
+  --list-marker-color: #1456f0;
+  --code-header-bg: #f8f8f8;
+  --code-bg: #f6f8fa;
+  --code-text-color: #24292e;
+  --code-right-color: #6a737d;
 }
 
 html.dark {
   --bg-color: #242424;
-  --text-color: rgba(255, 255, 255, 0.87);
+  --text-color: #bac6d2;
   --border-color: #3a3a3a;
   --header-bg: #242424;
   --workspace-bg: #1a1a1a;
@@ -24,6 +43,25 @@ html.dark {
   --link-color: #646cff;
   --link-hover-color: #535bf2;
   --button-bg: #1a1a1a;
+  
+  /* 预览区域主题变量 */
+  --heading-color: #bac6d2;
+  --inline-code-color: #79c0ff;
+  --inline-code-bg: rgba(121, 192, 255, 0.15);
+  --link-preview-color: #58a6ff;
+  --link-preview-hover: #7ee787;
+  --image-border: #3a3a3a;
+  --hr-color: #3a3a3a;
+  --blockquote-border: #3a3a3a;
+  --blockquote-color: rgba(255, 255, 255, 0.7);
+  --table-border: #3a3a3a;
+  --table-header-bg: #2d2d2d;
+  --table-hover-bg: #3a3a3a;
+  --list-marker-color: #58a6ff;
+  --code-header-bg: #282c34;
+  --code-bg: #282c34;
+  --code-text-color: #a9b7c6;
+  --code-right-color: #a9b7c6;
 }
 
 a {
@@ -45,7 +83,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
 
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
   line-height: 1.5;
   font-weight: 400;
   font-synthesis: none;
@@ -105,7 +143,7 @@ button:focus-visible {
   display: block;
   padding: 0 10px;
   word-wrap: break-word;
-  color: #3f4a54;
+  color: var(--heading-color);
   margin: 0.8em 0;
   font-weight: 700;
 }
@@ -134,28 +172,31 @@ button:focus-visible {
   font-size: 0.85em;
 }
 
+.mini-vue-md-paragraph {
+	color: var(--text-color);
+}
 .mini-vue-md-inline-code {
   line-height: 22px;
   padding: 2px 4px;
-  color: #3594f7;
-  background-color: rgba(59, 170, 250, 0.1);
+  color: var(--inline-code-color);
+  background-color: var(--inline-code-bg);
   border-radius: 4px;
 }
 
 .mini-vue-md-link {
-  color: #2d8cf0;
+  color: var(--link-preview-color);
   text-decoration: none;
   transition: color 0.3s;
   cursor: pointer;
 }
 
 .mini-vue-md-link:hover {
-  color: #73d13d;
+  color: var(--link-preview-hover);
 }
 
 .mini-vue-md-image {
   max-width: 100%;
-  border: 1px solid #e6e6e6;
+  border: 1px solid var(--image-border);
   border-radius: 3px;
   box-sizing: border-box;
   margin: 0 auto;
@@ -164,7 +205,7 @@ button:focus-visible {
 
 .mini-vue-md-hr {
   border: none;
-  border-top: 1px solid #e6e6e6;
+  border-top: 1px solid var(--hr-color);
   height: 1px;
   margin: 10px 0;
 }
@@ -175,8 +216,8 @@ button:focus-visible {
   margin: 20px 0;
   overflow: auto;
   padding: 0 1.2em;
-  border-left: 5px solid #d0d7de;
-  color: #3f4a54;
+  border-left: 5px solid var(--blockquote-border);
+  color: var(--blockquote-color);
 }
 
 .mini-vue-md-table {
@@ -187,17 +228,17 @@ button:focus-visible {
 
 .mini-vue-md-th,
 .mini-vue-md-td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--table-border);
   padding: 8px;
   text-align: left;
 }
 
 .mini-vue-md-th {
-  background-color: #f2f2f2;
+  background-color: var(--table-header-bg);
 }
 
 .mini-vue-md-tr:hover {
-  background-color: #f5f5f5;
+  background-color: var(--table-hover-bg);
 }
 
 .mini-vue-md-ul,
@@ -212,7 +253,7 @@ button:focus-visible {
 }
 
 .mini-vue-md-li::marker {
-  color: #1456f0;
+  color: var(--list-marker-color);
 }
 
 .mini-vue-md-ul > .mini-vue-md-li {
@@ -242,7 +283,7 @@ button:focus-visible {
 }
 
 .mini-vue-md-code-container .mini-vue-md-code-header {
-  background-color: #282c34;
+  background-color: var(--code-header-bg);
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   display: flex;
@@ -283,7 +324,7 @@ button:focus-visible {
 .mini-vue-md-code-right {
   margin-top: 10px;
   margin-right: 12px;
-  color: #a9b7c6;
+  color: var(--code-right-color);
 }
 
 .mini-vue-md-code-container pre {
@@ -291,12 +332,12 @@ button:focus-visible {
 }
 
 .mini-vue-md-code-container pre code {
-  background-color: #282c34;
+  background-color: var(--code-bg);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  color: #a9b7c6;
+  color: var(--code-text-color);
   display: block;
   font-family:
     source-code-pro,

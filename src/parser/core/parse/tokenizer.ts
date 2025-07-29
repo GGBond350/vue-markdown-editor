@@ -68,6 +68,7 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
             })
             if (res) {
                 isParse = true;
+						
                 break;
             }
         }

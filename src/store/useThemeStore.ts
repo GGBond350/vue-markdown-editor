@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { loadHighlightTheme } from "@/utils/highlightTheme";
 
 
 type Theme = 'light' | 'dark'
@@ -10,6 +11,9 @@ export const useThemeStore = defineStore("theme", () => {
 		document.documentElement.classList.remove('light', 'dark');
 		document.documentElement.classList.add(theme);
 		localStorage.setItem('theme', theme);
+		
+		// 动态切换代码高亮主题
+		loadHighlightTheme(theme === 'dark');
 	};
 
 	const toggleTheme = () => {

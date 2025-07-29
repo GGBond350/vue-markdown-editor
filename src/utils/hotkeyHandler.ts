@@ -22,7 +22,7 @@ export function createInsertContentHotkeyHandler(hotkey: HotkeyType): HotkeyHand
     return {
         run: () => {
             if (hotkey.handler) { 
-                hotkey.handler();
+                hotkey.handler?.();
                 return true;
             }
             insertContentEvent(hotkey.description as ToolbarType);

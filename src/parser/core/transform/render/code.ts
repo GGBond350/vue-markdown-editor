@@ -15,7 +15,7 @@ export const renderCode = (node: Tokens) => {
     } catch (error) {
         language = 'plaintext';
     }
-    const highlightedCode = hljs.highlight(node.value!, {language}).value;
+    const highlightedCode = hljs.highlight(node.value!, { language }).value;
     return  `<div class="${prefix}-code-container" data-line="${node.position.start.line}">
     <div class="${prefix}-code-header">
       <div class="${prefix}-code-icon">

@@ -6,8 +6,8 @@
             <span class="status-item">字数: {{ charCount }}</span>
         </div>
         <div class="statusbar-right">
-          <a-checkbox :checked="isSyncScroll" @change="toggleSyncScroll">同步滚动</a-checkbox>
-          <a-button class="status-item" @click="handleAreaScrollToTop">回到顶部</a-button>
+          <a-checkbox :checked="isSyncScroll" @change="toggleSyncScroll"><span class="status-item">同步滚动</span></a-checkbox>
+          <div class="status-item" @click="handleAreaScrollToTop">回到顶部</div>
         </div>
         
     </div>
@@ -50,6 +50,8 @@ const handleAreaScrollToTop = () => {
 .status-item {
   margin-right: 15px;
   color: var(--text-color);
+	font-size: 15px;
+	cursor: pointer;
 }
 
 </style>

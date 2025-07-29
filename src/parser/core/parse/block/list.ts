@@ -20,7 +20,6 @@ export const parseList = ({
 			resetCurrentStatus();
 		}
 	}
-	console.log('行：', index + 1, currentStatus.currentList?.isOrder);
 	const trimmedLine = line.trimStart();
 	let indent = line.length - trimmedLine.length;
 	const match = trimmedLine.match(/^(-|\d+\.)\s+(.*)/);
@@ -65,7 +64,6 @@ export const parseList = ({
 			}
 		}
 	} as Tokens;
-	console.log('indent',indent, currentStatus.currentIndent);
 	if (indent > currentStatus.currentIndent) {
 		if (!currentStatus.currentListItem) return;
 

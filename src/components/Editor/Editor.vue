@@ -6,6 +6,7 @@ const editorContainer = ref<HTMLDivElement | null>(null);
 const editorStore = useEditorStore();
 const { setCurrentScrollContainer } = editorStore;
 const { initEditor } = useEditorState({
+		enableShotcut: true,
     defaultContent: 'Hello, this is a simple editor!',
     onContentChange(content) {
     },

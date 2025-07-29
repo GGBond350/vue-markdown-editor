@@ -86,7 +86,7 @@ export const parseBlockquote = ({
         }
     }
     else {
-        // 如果不是 blockquote 的行，重置当前状态
-        resetCurrentStatus();
+			currentStatus.currentBlockquote = null
+    	return false
     }
 }

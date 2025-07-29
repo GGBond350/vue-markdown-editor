@@ -91,7 +91,6 @@ export function useEditorState(options: EditorStateOptions = {}) {
         }),
       ]
     });
-    console.log("Editor state initialized with extensions:", allExtensions);
     // 编辑器视图
    const view = new EditorView({
       state,

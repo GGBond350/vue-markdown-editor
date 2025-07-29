@@ -1,34 +1,34 @@
 import { keymap } from "@codemirror/view";
-
+import { undoEvent, redoEvent } from "./toolbar/event";
 
 export class Hotkey {
     static readonly HEADINGS = {
-        FIRST: new Hotkey("mod+1", "Heading-1"),
-        SECOND: new Hotkey("mod+2", "Heading-2"),
-        THIRD: new Hotkey("mod+3", "Heading-3"),
-        FOURTH: new Hotkey("mod+4", "Heading-4"),
-        FIFTH: new Hotkey("mod+5", "Heading-5"),
-        SIXTH: new Hotkey("mod+6", "Heading-6"),
+        FIRST: new Hotkey("mod+1", "heading-1"),
+        SECOND: new Hotkey("mod+2", "heading-2"),
+        THIRD: new Hotkey("mod+3", "heading-3"),
+        FOURTH: new Hotkey("mod+4", "heading-4"),
+        FIFTH: new Hotkey("mod+5", "heading-5"),
+        SIXTH: new Hotkey("mod+6", "heading-6"),
     } as const;
 
-    static readonly BOLD = new Hotkey("mod+b", "Bold"); // **Bold**
-    static readonly ITALIC = new Hotkey("mod+i", "Italic"); // *Italic*
-    static readonly UNDERLINE = new Hotkey("mod+u", "Underline"); // --Underline--
-    static readonly DELETE = new Hotkey("mod+shift+x", "Delete"); // ~~Delete~~
-    static readonly BLOCKQUOTE = new Hotkey("mod+shift+9", "Blockquote"); // > Blockquote
+    static readonly BOLD = new Hotkey("mod+b", "bold"); // **Bold**
+    static readonly ITALIC = new Hotkey("mod+i", "italic"); // *Italic*
+    static readonly UNDERLINE = new Hotkey("mod+u", "underline"); // --Underline--
+    static readonly DELETE = new Hotkey("mod+shift+x", "delete"); // ~~Delete~~
+    static readonly BLOCKQUOTE = new Hotkey("mod+shift+9", "blockquote"); // > Blockquote
     static readonly UNORDERED_LIST = new Hotkey("mod+shift+8", "ul"); // - Unordered List
     static readonly ORDERED_LIST = new Hotkey("mod+shift+7", "ol"); // 1. Ordered List
-    static readonly INLINE_CODE = new Hotkey("mod+`", "InlineCode"); // `Inline Code`
-    static readonly CODE_BLOCK = new Hotkey("mod+shift+c", "Code"); // ```Code Block```
-    static readonly LINK = new Hotkey("mod+k", "Link"); // [Link](url)
-    static readonly TABLE = new Hotkey("mod+shift+t", "Table"); // | Table |
+    static readonly INLINE_CODE = new Hotkey("mod+`", "inlineCode"); // `Inline Code`
+    static readonly CODE_BLOCK = new Hotkey("mod+shift+c", "code"); // ```Code Block```
+    static readonly LINK = new Hotkey("mod+k", "link"); // [Link](url)
+    static readonly TABLE = new Hotkey("mod+shift+t", "table"); // | Table |
     //! 为避免冲突，此处使用cm的history插件，不手动实现undo和redo功能
-    static readonly UNDO = new Hotkey("mod+z", "undo"); // undo
-    static readonly REDO = new Hotkey("mod+shift+z", "redo"); // redo
+    static readonly UNDO = new Hotkey("mod+z", "undo", () => undoEvent()); // undo
+    static readonly REDO = new Hotkey("mod+shift+z", "redo", () => redoEvent()); // redo
     static readonly FULL_SCREEN = new Hotkey("mod+alt+f", "fullscreen"); // fullscreen
 
     // Actions
-    static readonly SAVE = new Hotkey("mod+s", "Save");
+    static readonly SAVE = new Hotkey("mod+s", "save"); // save
 
     constructor(
         public readonly command: string,
