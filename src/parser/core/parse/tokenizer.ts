@@ -55,7 +55,7 @@ export const tokenizer = (lines: string[], root: RootTokens) => {
         const trimmedLine = line.trim();
 
         let isParse = false;
-        for (const [ket, parseFn] of Object.entries(parseMap)) {
+        for (const [key, parseFn] of Object.entries(parseMap)) {
             const res = parseFn({
                trimmedLine,
                 line,

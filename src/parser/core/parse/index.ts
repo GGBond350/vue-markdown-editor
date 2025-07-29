@@ -3,7 +3,7 @@ import { tokenizer } from "./tokenizer";
 import { parseCode } from "./block/code";
 import { parseHtml } from "./block/html";
 import { parseHeading } from "./block/heading";
-import { parseBlocckquote } from "./block/blockquote";
+import { parseBlockquote } from "./block/blockquote";
 import { parseThematicBreak } from "./block/thematicBreak";
 import { parseList } from "./block/list";
 import { parseTable } from "./block/table";
@@ -21,7 +21,7 @@ export const parseMap: Partial<ParseMapType> = {
     code: parseCode,
     html: parseHtml,
     heading: parseHeading,
-    blockquote: parseBlocckquote,
+    blockquote: parseBlockquote,
     thematicBreak: parseThematicBreak,
     list: parseList,
     table: parseTable,

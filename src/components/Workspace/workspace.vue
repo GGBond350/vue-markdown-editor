@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import StatusBar from '../StatusBar/statusBar.vue';
+import StatusBar from '../StatusBar/StatusBar.vue';
 import Editor from '../Editor/Editor.vue';
 import Preview from '../Preview/Preview.vue';
 import Toolbar from '../Toolbar/index.vue';

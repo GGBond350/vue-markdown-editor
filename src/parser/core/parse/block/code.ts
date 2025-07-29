@@ -1,18 +1,17 @@
 import type { ParseFnParams, Tokens } from "@/types/parser/token";
 
 export const parseCode = ({ line, lines, trimmedLine, index, currentOffset, currentStatus, root }: ParseFnParams) => {
-   
     // todo 解决解析遇到空格
     if (trimmedLine.startsWith("```")) {
         // 处理代码块
-        if (!currentStatus.isCodeBlock) {
-            currentStatus.isCodeBlock = true;
+        if (!currentStatus.inCodeBlock) {
+            currentStatus.inCodeBlock = true;
             currentStatus.codeBlockLang = trimmedLine.slice(3).trim();
             currentStatus.codeBlockValue = "";
             currentStatus.codeBlockStartOffset = currentOffset;
             currentStatus.codeBlockStartLine = index + 1;
         } else {
-            currentStatus.isCodeBlock = false;
+            currentStatus.inCodeBlock = false;
             const codeToken = {
                 type: 'code',
                 lang: currentStatus.codeBlockLang,
@@ -35,7 +34,8 @@ export const parseCode = ({ line, lines, trimmedLine, index, currentOffset, curr
             return true; // 成功解析代码块
 
         }
-    } else if (currentStatus.isCodeBlock) {
+         return true
+    } else if (currentStatus.inCodeBlock) {
         currentStatus.codeBlockValue += trimmedLine + "\n";
         if (index === lines.length -1) {
             const codeToken = {

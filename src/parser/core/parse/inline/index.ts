@@ -31,7 +31,7 @@ const MARKDOWN_PATTERNS_MAP: Record<string, MarkdownPattern> = {
 		process: (match, context) => createStandardToken('delete', match, context),
 	},
 	inlineCode: {
-		regex: /\`(?<context>.*?)\`/,
+		regex: /`(?<content>.*?)`/,
 		process: (match, context) => {
 			if (!match[1].trim()) {
 				return createTextToken(match[0], match, context);

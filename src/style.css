@@ -93,3 +93,224 @@ button:focus-visible {
   padding: 0; /* 覆盖默认的 padding */
   text-align: left; /* 覆盖默认的 text-align */
 }
+
+
+.mini-vue-md-h1,
+.mini-vue-md-h2,
+.mini-vue-md-h3,
+.mini-vue-md-h4,
+.mini-vue-md-h5,
+.mini-vue-md-h6 {
+  width: 100%;
+  display: block;
+  padding: 0 10px;
+  word-wrap: break-word;
+  color: #3f4a54;
+  margin: 0.8em 0;
+  font-weight: 700;
+}
+
+.mini-vue-md-h1 {
+  font-size: 2em;
+}
+
+.mini-vue-md-h2 {
+  font-size: 1.5em;
+}
+
+.mini-vue-md-h3 {
+  font-size: 1.25em;
+}
+
+.mini-vue-md-h4 {
+  font-size: 1em;
+}
+
+.mini-vue-md-h5 {
+  font-size: 0.875em;
+}
+
+.mini-vue-md-h6 {
+  font-size: 0.85em;
+}
+
+.mini-vue-md-inline-code {
+  line-height: 22px;
+  padding: 2px 4px;
+  color: #3594f7;
+  background-color: rgba(59, 170, 250, 0.1);
+  border-radius: 4px;
+}
+
+.mini-vue-md-link {
+  color: #2d8cf0;
+  text-decoration: none;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.mini-vue-md-link:hover {
+  color: #73d13d;
+}
+
+.mini-vue-md-image {
+  max-width: 100%;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 5px;
+}
+
+.mini-vue-md-hr {
+  border: none;
+  border-top: 1px solid #e6e6e6;
+  height: 1px;
+  margin: 10px 0;
+}
+
+.mini-vue-md-blockquote {
+  display: block;
+  line-height: 2em;
+  margin: 20px 0;
+  overflow: auto;
+  padding: 0 1.2em;
+  border-left: 5px solid #d0d7de;
+  color: #3f4a54;
+}
+
+.mini-vue-md-table {
+  width: 50%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.mini-vue-md-th,
+.mini-vue-md-td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.mini-vue-md-th {
+  background-color: #f2f2f2;
+}
+
+.mini-vue-md-tr:hover {
+  background-color: #f5f5f5;
+}
+
+.mini-vue-md-ul,
+.mini-vue-md-ol {
+  margin: 0.6em 0;
+  padding-inline-start: 30px;
+  list-style: initial;
+}
+
+.mini-vue-md-li {
+  list-style: initial;
+}
+
+.mini-vue-md-li::marker {
+  color: #1456f0;
+}
+
+.mini-vue-md-ul > .mini-vue-md-li {
+  list-style-type: disc;
+}
+.mini-vue-md-ul .mini-vue-md-ul > .mini-vue-md-li {
+  list-style-type: circle;
+}
+.mini-vue-md-ul .mini-vue-md-ul .mini-vue-md-ul > .mini-vue-md-li {
+  list-style-type: square;
+}
+.mini-vue-md-ol > .mini-vue-md-li {
+  list-style-type: decimal;
+}
+.mini-vue-md-ol .mini-vue-md-ol > .mini-vue-md-li {
+  list-style-type: lower-alpha;
+}
+.mini-vue-md-ol .mini-vue-md-ol .mini-vue-md-ol > .mini-vue-md-li {
+  list-style-type: lower-roman;
+}
+
+.mini-vue-md-code-container {
+  font-size: 12px;
+  line-height: 1;
+  margin: 20px 0;
+  position: relative;
+}
+
+.mini-vue-md-code-container .mini-vue-md-code-header {
+  background-color: #282c34;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  display: flex;
+  font-size: 12px;
+  font-weight: 600;
+  height: 32px;
+  justify-content: space-between;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.mini-vue-md-code-header .mini-vue-md-code-icon {
+  display: flex;
+  gap: 5px;
+  margin-left: 12px;
+}
+
+.mini-vue-md-code-header .mini-vue-md-code-icon span {
+  border-radius: 50%;
+  display: inline-block;
+  height: 10px;
+  margin-top: 10px;
+  width: 10px;
+}
+
+.mini-vue-md-code-icon span:nth-of-type(1) {
+  background-color: #ec6a5e;
+}
+
+.mini-vue-md-code-icon span:nth-of-type(2) {
+  background-color: #f4bf4f;
+}
+
+.mini-vue-md-code-icon span:nth-of-type(3) {
+  background-color: #61c554;
+}
+
+.mini-vue-md-code-right {
+  margin-top: 10px;
+  margin-right: 12px;
+  color: #a9b7c6;
+}
+
+.mini-vue-md-code-container pre {
+  margin: 0;
+}
+
+.mini-vue-md-code-container pre code {
+  background-color: #282c34;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  color: #a9b7c6;
+  display: block;
+  font-family:
+    source-code-pro,
+    Menlo,
+    Monaco,
+    Consolas,
+    Courier New,
+    monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow: auto;
+  padding: 1em;
+}
+
+.markdown-editor-preview p {
+  margin: 0 !important;
+}

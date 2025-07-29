@@ -20,7 +20,7 @@ export const parseList = ({
 			resetCurrentStatus();
 		}
 	}
-
+	console.log('行：', index + 1, currentStatus.currentList?.isOrder);
 	const trimmedLine = line.trimStart();
 	let indent = line.length - trimmedLine.length;
 	const match = trimmedLine.match(/^(-|\d+\.)\s+(.*)/);
@@ -65,13 +65,13 @@ export const parseList = ({
 			}
 		}
 	} as Tokens;
-
+	console.log('indent',indent, currentStatus.currentIndent);
 	if (indent > currentStatus.currentIndent) {
 		if (!currentStatus.currentListItem) return;
 
 		// 标准化缩进级别，确保每级缩进为2个空格
-    const indentLevel = Math.floor((indent - currentStatus.currentIndent) / 2);
-    indent = currentStatus.currentIndent + indentLevel * 2;
+		const indentLevel = Math.floor((indent - currentStatus.currentIndent) / 2);
+		indent = currentStatus.currentIndent + indentLevel * 2;
 
 		// 检查当前列表项是否已经包含子列表
 		const existSubList = currentStatus.currentListItem.children?.find(child => child.type === 'list');
@@ -79,7 +79,7 @@ export const parseList = ({
 		if (!existSubList) {
 			const newSubList = {
 				type: 'list',
-				ordered: isOrdered,
+				isOrder: isOrdered,
 				children: [],
 				position: listItem.position
 			} as Tokens;
@@ -91,7 +91,7 @@ export const parseList = ({
                 // 如果当前子列表的有序性与新列表项不一致，则创建新的子列表
                 const newSubList = {
                     type: 'list',
-                    ordered: isOrdered,
+                    isOrder: isOrdered,
                     children: [],
                     position: listItem.position
                 } as Tokens;
@@ -110,7 +110,7 @@ export const parseList = ({
         }
         const newList = {
             type: 'list',
-            ordered: isOrdered,
+            isOrder: isOrdered,
             children: [listItem],
             position: listItem.position
         } as Tokens;
@@ -125,7 +125,7 @@ export const parseList = ({
 	} else {
         const newList = {
             type: 'list',
-            ordered: isOrdered,
+            isOrder: isOrdered,
             children: [listItem],
             position: listItem.position
         } as Tokens;

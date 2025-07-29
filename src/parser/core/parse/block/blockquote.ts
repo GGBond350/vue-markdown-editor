@@ -4,7 +4,7 @@ import { parseInlineElements } from "../inline";
 import { parseMarkdown } from "..";
 import type Token from "markdown-it/lib/token.mjs";
 
-export const parseBlocckquote = ({
+export const parseBlockquote = ({
     trimmedLine,
     index,
     currentOffset,

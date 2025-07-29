@@ -7,3 +7,9 @@ declare module '*.svg?component' {
 }
 
 declare module 'emoji-mart-vue-fast/src';
+
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<{}, {}, any>
+  export default component
+}
