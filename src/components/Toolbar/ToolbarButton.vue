@@ -9,7 +9,7 @@
             </div>
         </template>
         <span @click="handleClick" class="toolbar-item">
-          <component :is="icon" class="toolbar-icon" />
+          <component :is="icon" class="iconStyle" />
         </span>
     </a-tooltip>
 
@@ -50,5 +50,8 @@ const handleClick = () => {
     border-radius: 3px;
     margin: 0 2px;
     transition: all 0.3s;
+}
+.iconStyle {
+		color: var(--icon-color);
 }
 </style>

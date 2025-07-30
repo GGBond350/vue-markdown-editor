@@ -12,7 +12,7 @@ const { isLeftSidebarVisible } = storeToRefs(toolbarStore);
 const componentName = 'Contents';
 
 const iconStyle = computed(() => {
-    return { color: isLeftSidebarVisible.value ? '#409eff' : '#606266' };
+    return { color: isLeftSidebarVisible.value ? 'var(--icon-color-active)' : 'var(--icon-color)' };
 })
 
 </script>

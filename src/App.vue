@@ -37,7 +37,6 @@ const { isFullscreen } = storeToRefs(toolbarStore);
   border-bottom: 1px solid var(--border-color);
 }
 :deep(.footer-root) {
-  border-top: 1px solid var(--border-color);
   border-bottom: none;
 }
 

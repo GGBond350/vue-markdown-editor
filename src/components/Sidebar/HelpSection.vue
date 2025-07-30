@@ -30,7 +30,7 @@ defineProps<Props>();
 .section-title {
   font-weight: 600;
   margin: 0 0 16px 0;
-  color: var(--text-color-primary, #333);
+  color: var(--text-color-primary);
   font-size: 14px;
 }
 
@@ -45,7 +45,7 @@ defineProps<Props>();
   align-items: center;
   font-size: 13px;
   margin-bottom: 12px;
-  color: var(--text-color-secondary, #666);
+  color: var(--text-color-secondary);
 }
 
 .icon {
@@ -62,15 +62,16 @@ defineProps<Props>();
 .item-title {
   flex: 1;
   min-width: 0;
+	color: var(--text-color-primary);
 }
 
 .rule {
   margin-left: auto;
   font-size: 12px;
-  background-color: var(--code-bg-color, #f5f5f5);
+  background-color: var(--code-bg-color);
   padding: 2px 6px;
   border-radius: 3px;
-  color: var(--code-text-color, #333);
+  color: var(--code-text-color);
   font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   white-space: pre;
 }

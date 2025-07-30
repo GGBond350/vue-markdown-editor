@@ -38,4 +38,8 @@ onMounted(() => {
 .editor-instance-container :deep(.cm-scroller) {
   height: 100%;
 }
+.editor-instance-container :deep(.cm-line) {
+	font-size: 16px;
+	padding: 5px 2px 0px 10px;
+}
 </style>

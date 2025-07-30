@@ -1,9 +1,9 @@
 <template>
     <a-dropdown  placement="bottom">
         <span class="toolbar-item">
-            <component :is="item.icon" class="toolbar-icon" /></span>
+            <component :is="item.icon" class="iconStyle" /></span>
         <template #overlay>
-            <a-menu :items="menuItems" @click="handleMenuClick"/>
+            <a-menu :items="menuItems" @click="handleMenuClick" class="menuStyle"/>
         </template>
     </a-dropdown>
 
@@ -52,5 +52,14 @@ const handleMenuClick = (info: MenuInfo) => {
     border-radius: 3px;
     margin: 0 2px;
     transition: all 0.3s;
-}   
+} 
+.iconStyle {
+		color: var(--icon-color);
+}
+.menuStyle {
+		background: var(--bg-color);
+}
+.menuStyle :deep(.ant-dropdown-menu-title-content) {
+	color: var(--heading-color);
+}  
 </style>

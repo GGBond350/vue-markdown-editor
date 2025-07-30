@@ -1,7 +1,7 @@
 <template>
  <a-dropdown placement="bottom">
    <span class="toolbar-item">
-      <EmojiIcon/>
+      <EmojiIcon class="iconStyle" />
     </span>
     <template #overlay>
       <Picker 
@@ -55,5 +55,8 @@ const i18n = {
     border-radius: 3px;
     margin: 0 2px;
     transition: all 0.3s;
-}   
+}
+.iconStyle {
+		color: var(--icon-color);
+}
 </style>

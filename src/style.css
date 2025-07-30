@@ -11,6 +11,11 @@ html.light {
   --link-hover-color: #747bff;
   --button-bg: #f9f9f9;
   
+  /* 滚动条主题变量 */
+  --scrollbar-track: #f1f1f1;
+  --scrollbar-thumb: #c1c1c1;
+  --scrollbar-thumb-hover: #a8a8a8;
+  
   /* 预览区域主题变量 */
   --heading-color: #3f4a54;
   --inline-code-color: #3594f7;
@@ -43,6 +48,11 @@ html.dark {
   --link-color: #646cff;
   --link-hover-color: #535bf2;
   --button-bg: #1a1a1a;
+  
+  /* 滚动条主题变量 */
+  --scrollbar-track: #2d2d2d;
+  --scrollbar-thumb: #5a5a5a;
+  --scrollbar-thumb-hover: #6a6a6a;
   
   /* 预览区域主题变量 */
   --heading-color: #bac6d2;
@@ -354,4 +364,53 @@ button:focus-visible {
 
 .markdown-editor-preview p {
   margin: 0 !important;
+}
+
+/* 自定义滚动条样式 */
+/* 适用于 Webkit 浏览器 (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;  /* 垂直滚动条宽度 */
+  height: 8px; /* 水平滚动条高度 */
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+/* 适用于 Firefox 浏览器 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* 针对特定区域的滚动条优化 */
+.preview-container::-webkit-scrollbar,
+.cm-editor .cm-scroller::-webkit-scrollbar {
+  width: 6px;
+}
+
+.preview-container::-webkit-scrollbar-thumb,
+.cm-editor .cm-scroller::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+.preview-container::-webkit-scrollbar-thumb:hover,
+.cm-editor .cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }

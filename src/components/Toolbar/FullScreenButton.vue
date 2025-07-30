@@ -22,8 +22,8 @@ const { isFullscreen } = storeToRefs(toolbarStore);
             </div>
         </template>
         <span @click="() => { toggleFullscreen() }" class="toolbar-item">
-          <fullscreenIcon  v-if="!isFullscreen" />
-          <ExitFullscreenIcon  v-else />
+          <fullscreenIcon  class="iconStyle" v-if="!isFullscreen" />
+          <ExitFullscreenIcon  class="iconStyle" v-else />
         </span>
     </a-tooltip>
 
@@ -44,5 +44,8 @@ const { isFullscreen } = storeToRefs(toolbarStore);
     border-radius: 3px;
     margin: 0 2px;
     transition: all 0.3s;
+}
+.iconStyle {
+		color: var(--icon-color);
 }
 </style>
