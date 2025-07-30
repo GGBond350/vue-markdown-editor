@@ -20,7 +20,7 @@ const {
 
 const gridColumnsStyle = computed(() => {
     const leftWidth = isLeftSidebarVisible.value ? '240px' : '0';
-    const rightWidth = isRightSidebarVisible.value ? '240px' : '0';
+    const rightWidth = isRightSidebarVisible.value ? '0.7fr' : '0';
     let editorWidth = '1fr';
     let previewWidth = '1fr';
     if (isOnlyPreview.value) {
