@@ -1,4 +1,4 @@
-import type { ToolbarType } from "@/types/editor/toolbar";
+import { BaseToolbarType, type ToolbarType } from "@/types/editor/toolbar";
 
 export type ToolbarTemplateValue = {
     content: string; // 模板内容
@@ -137,4 +137,27 @@ export const toolbarTemplate: ToolbarTemplateType = {
       end: 5,
     },
   },
+}
+
+export const getToolbarTemplate = (type: ToolbarType, payload?: any): ToolbarTemplateValue => {
+    if (type ===   BaseToolbarType.IMAGE_LINK) {
+			 if (typeof payload === 'object' && payload.url) {
+        return {
+					content: `![${payload.alt || ''}](${payload.url})`,
+					selection: {
+						start: 4,
+						end: 7,
+					}
+				}
+      }
+			return {
+				content: `![alt](URL)`,
+				selection: {
+					start: 4,
+					end: 7,
+				},
+			};
+		} else{
+			return toolbarTemplate[type] as ToolbarTemplateValue;
+		}
 }

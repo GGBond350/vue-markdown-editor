@@ -1,9 +1,9 @@
 import type { ToolbarType } from "@/types/editor/toolbar";
-import { toolbarTemplate, type ToolbarTemplateValue } from "./template";
+import { getToolbarTemplate, toolbarTemplate, type ToolbarTemplateValue } from "./template";
 import contentInsert from "@/utils/contentInsert";
 
-export function insertContentEvent(type: ToolbarType) {
-    const {content, selection} = toolbarTemplate[type] as ToolbarTemplateValue;
+export function insertContentEvent(type: ToolbarType, payload?: any) {
+    const {content, selection} = getToolbarTemplate(type, payload);
     contentInsert.insertContent(content, selection);
 }
 

@@ -26,6 +26,7 @@ import WriteButton from "@/components/Toolbar/WriteButton.vue";
 import Emoji from "@/components/Toolbar/Emoji.vue";
 import { markRaw } from "vue";
 import FullScreenButton from "@/components/Toolbar/FullScreenButton.vue";
+import { handleImageUpload } from "@/utils/imageUpload";
 
 export const defaultToolbarsConfig: ToolbarItem[] = [
 
@@ -161,6 +162,7 @@ export const defaultToolbarsConfig: ToolbarItem[] = [
             {
                 type: BaseToolbarType.IMAGE_UPLOAD,
                 title: "上传图片",
+								onClick: handleImageUpload,
             },
             {
                 type: BaseToolbarType.IMAGE_LINK,
