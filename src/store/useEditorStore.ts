@@ -14,6 +14,68 @@ export const useEditorStore = defineStore('editor', () => {
 	const previewView = ref<HTMLElement | null>(null);
 
 	const currentScrollContainer = shallowRef<'editor' | 'preview' | null>(null);
+
+	const imageMap = new Map<string, string>();
+
+	const addImage = (id: string, base64: string) => {
+		imageMap.set(id, base64);
+	}
+
+	const getImage = (id: string): string | undefined => {
+		return imageMap.get(id);
+	}
+
+	const removeImage = (id: string) => {
+		if (imageMap.has(id)) {
+			imageMap.delete(id);
+		}
+	}
+
+	const clearUnusedImages = (content: string) => {
+		const usedImageIds = new Set<string>();
+		const regex = /📷 ([^)]+)/g;
+		let match;
+		while ((match = regex.exec(content)) !== null) { 
+			usedImageIds.add(match[1]);
+		}
+		// 删除未使用的图片
+		for (const [id] of imageMap) {
+			if (!usedImageIds.has(id)) {
+				imageMap.delete(id);
+			}
+		}
+	}
+
+	// 跟图片清理相关
+	let debounceCleanupTimer: number | null = null;
+	let periodicCleanupTimer: number | null = null;
+
+	const debounceCleanup = (content: string) => {
+		if (debounceCleanupTimer) clearTimeout(debounceCleanupTimer);
+		debounceCleanupTimer = setTimeout(() => {
+			clearUnusedImages(content);
+		}, 3000);
+	}
+
+	const startPeriodicCleanup = () => {
+		if (periodicCleanupTimer) clearInterval(periodicCleanupTimer);
+		periodicCleanupTimer = setInterval(() => {
+			clearUnusedImages(content.value);
+		}, 10 * 60 * 1000); // 每10分钟清理一次
+	}
+
+	// 停止定期清理
+	const stopPeriodicCleanup = () => {
+		if (periodicCleanupTimer) {
+			clearInterval(periodicCleanupTimer);
+			periodicCleanupTimer = null;
+		}
+		if (debounceCleanupTimer) {
+			clearTimeout(debounceCleanupTimer);
+			debounceCleanupTimer = null;
+		}
+	};
+
 	const isSyncScroll = ref<boolean>(
 		(() => {
 			const savedStatus = localStorage.getItem(SYNC_SCROLL_STATUS_KEY);
@@ -77,6 +139,13 @@ export const useEditorStore = defineStore('editor', () => {
 		setPreviewView,
 		updateStats,
 		setCurrentScrollContainer,
-		toggleSyncScroll
+		toggleSyncScroll,
+		addImage,
+		getImage,
+		removeImage,
+		clearUnusedImages,
+		debounceCleanup,
+		startPeriodicCleanup,
+		stopPeriodicCleanup
 	}
 })

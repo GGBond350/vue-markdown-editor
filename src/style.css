@@ -206,10 +206,13 @@ button:focus-visible {
 
 .mini-vue-md-image {
   max-width: 100%;
+  max-width: 400px;
+  object-fit: contain;
   border: 1px solid var(--image-border);
   border-radius: 3px;
   box-sizing: border-box;
   margin: 0 auto;
+  display: block;
   padding: 5px;
 }
 

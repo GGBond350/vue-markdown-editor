@@ -4,10 +4,25 @@ import Footer from './components/Footer/footer.vue';
 import Workspace from './components/Workspace/workspace.vue';
 import { useToolbarStore } from '@/store/toolbar';
 import { useThemeStore } from './store/useThemeStore';
+import { useEditorStore } from './store/useEditorStore';
 import { storeToRefs } from 'pinia';
+import { onMounted, onBeforeUnmount } from 'vue';
 useThemeStore(); // 初始化主题存储
 const toolbarStore = useToolbarStore();
+const editorStore = useEditorStore();
+const { startPeriodicCleanup, stopPeriodicCleanup, clearUnusedImages } = editorStore;
 const { isFullscreen } = storeToRefs(toolbarStore);
+
+onMounted(() => {
+  // 启动定期清理
+  startPeriodicCleanup();
+});
+
+// 在组件卸载时停止定期清理
+onBeforeUnmount(() => {
+  stopPeriodicCleanup();
+  clearUnusedImages(editorStore.content);
+});
 </script>
 
 <template>
