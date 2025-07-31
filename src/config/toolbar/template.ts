@@ -131,7 +131,7 @@ export const toolbarTemplate: ToolbarTemplateType = {
     },
   },
   table: {
-    content: `|  表头  |  表头  |\n| ----- | ----- |\n| 单元格 | 单元格 |`,
+    content: `|  表头  |  表头  |\n| -----  | -----  |\n| 单元格 | 单元格 |`,
     selection: {
       start: 3,
       end: 5,

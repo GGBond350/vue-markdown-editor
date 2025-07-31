@@ -1,8 +1,6 @@
 import type { ParseFnParams, Tokens } from "@/types/parser/token";
-import { parse } from "vue/compiler-sfc";
 import { parseInlineElements } from "../inline";
 import { parseMarkdown } from "..";
-import type Token from "markdown-it/lib/token.mjs";
 
 export const parseBlockquote = ({
     trimmedLine,
@@ -41,6 +39,20 @@ export const parseBlockquote = ({
         (currentStatus.currentBlockquote.children as Tokens[]).push(...blockquoteContent.children);
         return true;
     } else if (currentStatus.currentBlockquote) { // 处理懒惰行
+        // 检查是否是应该结束 blockquote 的行
+        const isTableRow = /^\|.*\|$/.test(trimmedLine); // 表格行
+        const isCodeBlock = trimmedLine.startsWith("```"); // 代码块
+        const isHeading = /^#{1,6}\s/.test(trimmedLine); // 标题
+        const isThematicBreak = /^(?:-{3,}|[*]{3,})$/.test(trimmedLine); // 分隔线
+        const isList = /^(-|\d+\.)\s+.*/.test(trimmedLine); // 列表
+        const isEmptyLine = trimmedLine === ''; // 空行
+        
+        // 如果遇到这些结构，应该结束当前的 blockquote
+        if (isTableRow || isCodeBlock || isHeading || isThematicBreak || isList || isEmptyLine) {
+            currentStatus.currentBlockquote = null;
+            return false;
+        }
+        
         const children = currentStatus.currentBlockquote.children as Tokens[];
         const lastChild = children?.[children.length - 1];
         // 如果最后一个子元素是段落，则追加内容
@@ -80,13 +92,46 @@ export const parseBlockquote = ({
             }
             return true; // 成功解析 blockquote 内容
         } else {
-            // 如果不是 blockquote 的行，重置当前状态
-            currentStatus.currentBlockquote = null;
-            return false;
+            // 如果不是段落，创建新的段落来容纳这个懒惰行
+            const newParagraph = {
+                type: 'paragraph',
+                children: [{
+                    type: 'text',
+                    value: trimmedLine,
+                    position: {
+                        start: {
+                            line: index + 1,
+                            column: 1,
+                            offset: currentOffset
+                        },
+                        end: {
+                            line: index + 1,
+                            column: trimmedLine.length + 1,
+                            offset: currentOffset + trimmedLine.length
+                        }
+                    }
+                }],
+                position: {
+                    start: {
+                        line: index + 1,
+                        column: 1,
+                        offset: currentOffset
+                    },
+                    end: {
+                        line: index + 1,
+                        column: trimmedLine.length + 1,
+                        offset: currentOffset + trimmedLine.length
+                    }
+                }
+            } as Tokens;
+            
+            children.push(newParagraph);
+            currentStatus.currentBlockquote.position.end = newParagraph.position.end;
+            return true;
         }
     }
     else {
-			currentStatus.currentBlockquote = null
-    	return false
+        currentStatus.currentBlockquote = null
+        return false
     }
 }
