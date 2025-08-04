@@ -10,7 +10,7 @@ html.light {
   --link-color: #646cff;
   --link-hover-color: #747bff;
   --button-bg: #f9f9f9;
-  
+  --input-bg: #f5f7fa;
   /* 滚动条主题变量 */
   --scrollbar-track: #f1f1f1;
   --scrollbar-thumb: #c1c1c1;
@@ -34,6 +34,8 @@ html.light {
   --code-bg: #f6f8fa;
   --code-text-color: #24292e;
   --code-right-color: #6a737d;
+  --copy-icon-color: #6a737d;
+  --copy-icon-hover-color: #24292e;
 }
 
 html.dark {
@@ -48,7 +50,7 @@ html.dark {
   --link-color: #646cff;
   --link-hover-color: #535bf2;
   --button-bg: #1a1a1a;
-  
+  --input-bg: #2d2d2d;
   /* 滚动条主题变量 */
   --scrollbar-track: #2d2d2d;
   --scrollbar-thumb: #5a5a5a;
@@ -72,6 +74,8 @@ html.dark {
   --code-bg: #282c34;
   --code-text-color: #a9b7c6;
   --code-right-color: #a9b7c6;
+  --copy-icon-color: #a9b7c6;
+  --copy-icon-hover-color: #ffffff;
 }
 
 a {
@@ -335,6 +339,8 @@ button:focus-visible {
 }
 
 .mini-vue-md-code-right {
+  display: flex;
+  align-items: center;
   margin-top: 10px;
   margin-right: 12px;
   color: var(--code-right-color);
@@ -363,6 +369,9 @@ button:focus-visible {
   line-height: 1.6;
   overflow: auto;
   padding: 1em;
+}
+.mini-vue-md-language-text {
+  font-size: 16px;
 }
 
 .markdown-editor-preview p {

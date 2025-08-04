@@ -23,7 +23,7 @@ export const renderCode = (node: Tokens) => {
         <span></span>
         <span></span>
       </div>
-      <div class="${prefix}-code-right">${language}</div>
+      <div class="${prefix}-code-right"><span class=${prefix}-language-text>${language}</span></div>
     </div>
     <pre><code class="language-${language}">${highlightedCode}</code></pre>
   </div>`;

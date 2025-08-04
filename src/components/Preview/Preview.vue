@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useEditorStore } from '@/store/useEditorStore';
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
 
 import { usePreviewState } from '@/composables/usePreview';
 import { parseMarkdown } from '@/parser/core/parse';
 import { transformHtml } from '@/parser/core/transform';
+import { useCopyCode } from '@/composables/useCopyCode';
 
 const editorStore = useEditorStore();
 const { setCurrentScrollContainer } = editorStore;
@@ -13,6 +14,9 @@ const previewContainer = ref<HTMLDivElement | null>(null);
 // 防抖后的内容
 const debouncedContent = ref(editorStore.content);
 let debounceTimer: number | null = null;
+
+// 在现有代码后添加
+const { addCopyButtons, clearCopyButtons } = useCopyCode(previewContainer, debouncedContent);
 
 // 监听内容变化，使用防抖
 watch(() => editorStore.content, (newContent) => {
@@ -24,6 +28,9 @@ watch(() => editorStore.content, (newContent) => {
     debouncedContent.value = newContent;
   }, 150); // 300ms 防抖延迟
 }, { immediate: true });
+
+
+
 
 const handleMouseEnter = () => {
   setCurrentScrollContainer('preview');
@@ -37,6 +44,13 @@ const renderedHtml = computed(() => {
   return '';
 })
 
+// 监听渲染内容变化，添加复制按钮
+watch(renderedHtml, () => {
+  nextTick(() => {
+    addCopyButtons();
+  });
+}, { flush: 'post', immediate: true });
+
 onMounted(() => {
   if (previewContainer.value) {
     usePreviewState().initPreview(previewContainer.value);
@@ -48,6 +62,7 @@ onUnmounted(() => {
   if (debounceTimer) {
     clearTimeout(debounceTimer);
   }
+  clearCopyButtons(); // 新增：清理复制按钮
 });
 </script>
 
