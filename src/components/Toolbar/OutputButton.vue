@@ -1,15 +1,14 @@
 <script lang="ts" setup> 
 import { useToolbarStore } from '@/store/toolbar';
-import HelpIcon from "@/assets/images/help.svg"
+import OutputIcon from "@/assets/images/output.svg"
 import { storeToRefs } from 'pinia';
-import Help from '@/components/Sidebar/Help.vue';
-import { BaseToolbarType } from '@/types/editor/toolbar';
+import Output from '@/components/Sidebar/Output.vue';
 import { computed } from 'vue';
 
 const toolbarStore = useToolbarStore();
 const { setRightSidebar } = toolbarStore;
 const { rightSidebarMark } = storeToRefs(toolbarStore);
-const componentName = 'Help';
+const componentName = 'Output';
 
 const iconStyle = computed(() => {
     return { color: rightSidebarMark.value === componentName ? 'var(--icon-color-active)' : 'var(--icon-color)' };
@@ -21,11 +20,11 @@ const iconStyle = computed(() => {
      <a-tooltip placement="top">
         <template #title>
             <div style="text-align: center; white-space: pre-line;">
-                <div>帮助</div>
+                <div>输出</div>
             </div>
         </template>
-        <span @click="() => { setRightSidebar(Help, componentName) }" class="toolbar-item">
-          <HelpIcon :style="iconStyle" />
+        <span @click="() => { setRightSidebar(Output, componentName) }" class="toolbar-item">
+          <OutputIcon :style="iconStyle" />
         </span>
     </a-tooltip>
 

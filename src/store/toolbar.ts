@@ -40,6 +40,8 @@ export const useToolbarStore = defineStore("toolbar", () => {
             isLeftSidebarVisible.value = true; // 显示左侧边栏
         } else {
             isLeftSidebarVisible.value = !isLeftSidebarVisible.value; // 切换左侧边栏的显示状态
+            leftSidebarComponent.value = null;
+            leftSidebarMark.value = null; // 清除标记
         }
     }
 
@@ -50,6 +52,8 @@ export const useToolbarStore = defineStore("toolbar", () => {
             isRightSidebarVisible.value = true; // 显示右侧边栏
         } else {
             isRightSidebarVisible.value = !isRightSidebarVisible.value; // 切换右侧边栏的显示状态
+            rightSidebarComponent.value = null;
+            rightSidebarMark.value = null;
         }
     }
 

@@ -7,15 +7,28 @@ export const exportHTML = (element: HTMLElement, filename: string) => {
 
 
         const htmlContent = element.outerHTML;
-        const styles = Array.from(document.styleSheets)
+        const styleElements = Array.from(document.styleSheets)
             .map((sheet) => {
                 try {
-                return Array.from(sheet.cssRules)
-                    .map((rule) => rule.cssText)
-                    .join("\n");
+                    // 对于内联样式，直接读取规则
+                    if (sheet.cssRules && !sheet.href) {
+                        const rules = Array.from(sheet.cssRules)
+                            .map((rule) => rule.cssText)
+                            .join("\n");
+                        return `<style>${rules}</style>`;
+                    }
+                    // 对于外部样式表，生成 <link> 标签
+                    if (sheet.href) {
+                        return `<link rel="stylesheet" href="${sheet.href}">`;
+                    }
+                    return "";
                 } catch (e) {
-                console.error("Error accessing stylesheet:", e);
-                return "";
+                    // 如果因为跨域等原因无法访问，也尝试生成 <link> 标签
+                    if (sheet.href) {
+                        return `<link rel="stylesheet" href="${sheet.href}">`;
+                    }
+                    console.warn("无法读取样式表规则:", e);
+                    return "";
                 }
             })
             .join("\n");
@@ -28,9 +41,7 @@ export const exportHTML = (element: HTMLElement, filename: string) => {
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Exported HTML</title>
-            <style>
-              ${styles}
-            </style>
+            ${styleElements}
           </head>
           <body>
             ${htmlContent}

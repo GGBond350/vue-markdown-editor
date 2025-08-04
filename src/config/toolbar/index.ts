@@ -14,7 +14,6 @@ import ImageIcon from "@/assets/images/image.svg?component"
 import TableIcon from "@/assets/images/table.svg?component"
 import UndoIcon from "@/assets/images/undo.svg?component"
 import RedoIcon from "@/assets/images/redo.svg?component"
-import FullScreenIcon from "@/assets/images/fullscreen.svg?component"
 import SaveIcon from "@/assets/images/save.svg?component"
 import { Hotkey } from "../hotkeys";
 import { insertContentEvent, redoEvent, undoEvent } from "./event";
@@ -24,6 +23,7 @@ import ContentsButton from "@/components/Toolbar/ContentsButton.vue";
 import PreviewButton from "@/components/Toolbar/PreviewButton.vue";
 import WriteButton from "@/components/Toolbar/WriteButton.vue";
 import Emoji from "@/components/Toolbar/Emoji.vue";
+import OutputButton from "@/components/Toolbar/OutputButton.vue";
 import { markRaw } from "vue";
 import FullScreenButton from "@/components/Toolbar/FullScreenButton.vue";
 import { handleImageUpload } from "@/utils/imageUpload";
@@ -227,4 +227,8 @@ export const defaultToolbarsConfig: ToolbarItem[] = [
         type: BaseToolbarType.HELP,
         component: markRaw(HelpButton),
     },
+    {
+        type: BaseToolbarType.OUTPUT,
+        component: markRaw(OutputButton),
+    }
 ]
