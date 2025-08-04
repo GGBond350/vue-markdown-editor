@@ -54,7 +54,7 @@ export const toolbarTemplate: ToolbarTemplateType = {
         }
     },
     "bold": {
-        content: "**",
+        content: "****",
         selection: {
             start: 2,
             end: 2

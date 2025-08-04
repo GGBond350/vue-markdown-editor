@@ -2,7 +2,7 @@
   <div class="output-sidebar">
     <a-form layout="vertical">
       <a-form-item class="form-item" label="文件类型">
-        <a-select v-model:value="fileType"  style="width: 100%;" class="custom-select-dropdown">
+        <a-select v-model:value="fileType"  style="width: 100%;" popupClassName="custom-dropdown">
           <a-select-option value="PDF">PDF</a-select-option>
           <a-select-option value="HTML">HTML</a-select-option>
         </a-select>
@@ -56,30 +56,23 @@ const handleExport = async () => {
   padding: 16px;
   background-color: var(--bg-color);
 }
- .form-item :deep(.ant-form-item-label) >label {
+
+.form-item :deep(.ant-form-item-label) > label {
   color: var(--text-color);
 }
 
 .form-item :deep(.ant-select-selector) {
-  background-color: var(--input-bg);
+  background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   color: var(--text-color);
-}
-.ant-select-dropdown {
-  background-color: var(--input-bg) !important;
-  border: 1px solid var(--border-color) !important;
-}
-
-.ant-select-dropdown .ant-select-item {
-  color: var(--text-color) !important;
-  background-color: var(--input-bg) !important;
 }
 
 .form-item :deep(.ant-select-arrow) {
   color: var(--text-color);
 }
+
 .form-item :deep(.ant-input) {
-  background-color: var(--input-bg);
+  background-color: var(--bg-color);
   border: 1px solid var(--border-color);
   color: var(--text-color);
 }

@@ -6,6 +6,7 @@ html.light {
   --workspace-bg: #f5f7fa;
   --icon-color: #606266;
   --icon-color-active: #409eff;
+  --icon-color-active-alpha: rgba(64, 158, 255, 0.2);
   --icon-hover-bg: #333;
   --link-color: #646cff;
   --link-hover-color: #747bff;
@@ -46,6 +47,7 @@ html.dark {
   --workspace-bg: #1a1a1a;
   --icon-color: #a0a0a0;
   --icon-color-active: #409eff;
+  --icon-color-active-alpha: rgba(64, 158, 255, 0.2);
   --icon-hover-bg: #aa9e9e;
   --link-color: #646cff;
   --link-hover-color: #535bf2;
@@ -197,6 +199,13 @@ button:focus-visible {
   border-radius: 4px;
 }
 
+.mini-vue-md-em {
+  font-style: italic;
+  color: var(--text-color);
+  /* 启用字体合成，让浏览器为不支持斜体的字体（如中文字体）自动合成斜体效果 */
+  font-synthesis: style;
+}
+
 .mini-vue-md-link {
   color: var(--link-preview-color);
   text-decoration: none;
@@ -246,16 +255,19 @@ button:focus-visible {
 .mini-vue-md-th,
 .mini-vue-md-td {
   border: 1px solid var(--table-border);
+	color: var(--text-color);
   padding: 8px;
   text-align: left;
 }
 
 .mini-vue-md-th {
   background-color: var(--table-header-bg);
+	color: var(--text-color);
 }
 
 .mini-vue-md-tr:hover {
   background-color: var(--table-hover-bg);
+	
 }
 
 .mini-vue-md-ul,
@@ -425,4 +437,114 @@ button:focus-visible {
 .preview-container::-webkit-scrollbar-thumb:hover,
 .cm-editor .cm-scroller::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
+}
+
+/* Ant Design 组件主题适配 */
+/* 下拉框样式 */
+.ant-select-dropdown {
+  background-color: var(--bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.ant-select-dropdown .ant-select-item {
+  color: var(--text-color) !important;
+  background-color: var(--bg-color) !important;
+}
+
+/* 选择框本身的样式 */
+.ant-select-selector {
+  background-color: var(--bg-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.ant-select-selector .ant-select-selection-item {
+  color: var(--text-color) !important;
+}
+
+.ant-select-selector .ant-select-selection-placeholder {
+  color: var(--text-color-secondary) !important;
+}
+
+/* 选择框聚焦状态 */
+.ant-select:hover .ant-select-selector,
+.ant-select-focused .ant-select-selector,
+.ant-select-open .ant-select-selector {
+  border-color: var(--icon-color-active) !important;
+  box-shadow: 0 0 0 2px var(--icon-color-active-alpha) !important;
+}
+
+.ant-select-dropdown .ant-select-item-option-content {
+  color: var(--text-color) !important;
+}
+
+.ant-select-dropdown .ant-select-item:hover {
+  background-color: var(--button-bg) !important;
+}
+
+.ant-select-dropdown .ant-select-item:hover .ant-select-item-option-content {
+  color: var(--text-color) !important;
+}
+
+.ant-select-dropdown .ant-select-item-option-selected {
+  background-color: var(--icon-color-active) !important;
+  color: #ffffff !important;
+}
+
+.ant-select-dropdown .ant-select-item-option-selected .ant-select-item-option-content {
+  color: #ffffff !important;
+}
+
+/* 自定义下拉框样式 */
+.custom-dropdown {
+  background-color: var(--bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.custom-dropdown .ant-select-item {
+  color: var(--text-color) !important;
+  background-color: var(--bg-color) !important;
+}
+
+.custom-dropdown .ant-select-item-option-content {
+  color: var(--text-color) !important;
+}
+
+.custom-dropdown .ant-select-item:hover {
+  background-color: var(--button-bg) !important;
+}
+
+.custom-dropdown .ant-select-item:hover .ant-select-item-option-content {
+  color: var(--text-color) !important;
+}
+
+.custom-dropdown .ant-select-item-option-selected {
+  background-color: var(--icon-color-active) !important;
+  color: #ffffff !important;
+}
+
+.custom-dropdown .ant-select-item-option-selected .ant-select-item-option-content {
+  color: #ffffff !important;
+}
+
+/* 输入框样式 */
+.ant-input {
+  background-color: var(--bg-color) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-color) !important;
+}
+
+.ant-input:focus {
+  border-color: var(--icon-color-active) !important;
+  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2) !important;
+}
+
+/* 按钮样式 */
+.ant-btn-primary {
+  background-color: var(--icon-color-active) !important;
+  border-color: var(--icon-color-active) !important;
+}
+
+.ant-btn-primary:hover {
+  background-color: var(--link-hover-color) !important;
+  border-color: var(--link-hover-color) !important;
 }
