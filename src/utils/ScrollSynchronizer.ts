@@ -1,5 +1,5 @@
 import  { EditorView } from "@codemirror/view";
-
+import { toRaw } from 'vue';
 
 interface SyncScrollInstances {
   editorView: EditorView;
@@ -24,13 +24,13 @@ export class ScrollSynchronizer {
         this.clearMapping();
 
         const previewValidElements = this.getValidPreviewElements(previewView);
+        const rawEditorView = toRaw(editorView);
 
         previewValidElements.forEach((element) => {
             const lineNumber = this.getLineNumber(element);
+            if (!this.isValidLineNumber(lineNumber, rawEditorView)) return;
 
-            if (!this.isValidLineNumber(lineNumber, editorView)) return;
-
-            const editorLineInfo = this.getEditorLineInfo(editorView, lineNumber);
+            const editorLineInfo = this.getEditorLineInfo(rawEditorView, lineNumber);
             if (!editorLineInfo) return;
 
             this.editorElementList.push(editorLineInfo.top);
@@ -59,7 +59,7 @@ export class ScrollSynchronizer {
     private getValidPreviewElements(previewView: HTMLElement): Element[] {
         return Array.from(previewView.childNodes).filter((node: ChildNode) => {
             const element = node as HTMLElement;
-            return !((element.nodeName === 'P' && element.clientHeight == 0) || element.nodeType === 3); // 只保留段落和文本节点
+            return !((element.clientHeight === 0 && node.nodeName === "P") || node.nodeType === 3);
         }) as Element[];
     }
 
@@ -72,13 +72,14 @@ export class ScrollSynchronizer {
 
     // 判断行号是否有效
     private isValidLineNumber(lineNumber: number, editorView: EditorView): boolean {
-        return lineNumber >= 0 && editorView.state?.doc && lineNumber < editorView.state.doc.lines;
+        return lineNumber >= 1 && editorView.state?.doc && lineNumber <= editorView.state.doc.lines;
     }
 
     // 获取编辑器行信息
     private getEditorLineInfo(editorView: EditorView, lineNumber: number) {
-        const line = editorView.state?.doc?.line(lineNumber);
-        return line ? editorView.lineBlockAt(line.from) : null;
+        const rawEditorView = toRaw(editorView);
+        const line = rawEditorView.state?.doc?.line(lineNumber);
+        return line ? rawEditorView.lineBlockAt(line.from) : null;
     }
 
     // 清除编辑器和预览区域的映射关系
@@ -98,7 +99,7 @@ export class ScrollSynchronizer {
 
     // 判断是否滚动到底部
     private isScrolledToBottom(element: HTMLElement): boolean {
-        return (element.scrollHeight - element.scrollTop + ScrollSynchronizer.BOTTOM_THRESHOLD <= element.clientHeight);
+        return (element.scrollTop + element.clientHeight + ScrollSynchronizer.BOTTOM_THRESHOLD >= element.scrollHeight);
     }
 
     // 滚动到顶部
@@ -119,20 +120,20 @@ export class ScrollSynchronizer {
         const currentScrollTop = targetElement.scrollTop;
         const scrollDistance = targetScrollTop - currentScrollTop;
 
-				const animate = (timeStamp: number, startTime?: number) => {
-					if (!startTime) startTime = timeStamp;
-					const elapsed = timeStamp - startTime;
+        const animate = (timeStamp: number, startTime?: number) => {
+            if (!startTime) startTime = timeStamp;
+            const elapsed = timeStamp - startTime;
 
-					const progress = Math.min(elapsed / ScrollSynchronizer.SCROLL_ANIMATION_DURATION, 1);
+            const progress = Math.min(elapsed / ScrollSynchronizer.SCROLL_ANIMATION_DURATION, 1);
 
-					targetElement.scrollTop = currentScrollTop + scrollDistance * progress;
+            targetElement.scrollTop = currentScrollTop + scrollDistance * progress;
 
-					if (progress < 1) {
-						requestAnimationFrame((ts) => animate(ts, startTime));
-					}
+            if (progress < 1) {
+                requestAnimationFrame((ts) => animate(ts, startTime));
+            }
 
-				}
-				requestAnimationFrame(animate);
+        }
+        requestAnimationFrame(animate);
     }
 
     // 比例滚动

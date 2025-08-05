@@ -1,5 +1,8 @@
-# Vue 3 + TypeScript + Vite
+**Vue Markdown Editor** 是一个基于 Vue 3 + TypeScript实现的 Markdown 编辑器。
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+技术栈：Vue 3  + TypeScript + CodeMirror 6 + Pinia + Ant Design Vue
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+核心功能：
+
+1. 实现 Markdown 语法的 AST 解析引擎，用于解析 Markdown 文本，支持增量解析（）
+2.
